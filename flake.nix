@@ -38,9 +38,15 @@
       overlays = import ./overlays.nix;
 
       lib = {
-        mkDevShell = { pkgs, extraModules ? [] }: import ./default.nix {
-          inherit pkgs extraModules;
-        };
+        # Evaluate each module function with pkgs before passing to default.nix
+        mkDevShell = { pkgs, extraModules ? [] }:
+          let
+            evaluatedModules = map (m: m { inherit pkgs; }) extraModules;
+          in
+          import ./default.nix {
+            inherit pkgs;
+            extraModules = evaluatedModules;
+          };
       };
     };
 }
