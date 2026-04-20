@@ -38,13 +38,8 @@
       overlays = import ./overlays.nix;
 
       lib = {
-        mkDevShell = { extraModules ? [] }: import ./default.nix {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = self.overlays;
-          };
-          inherit extraModules;
+        mkDevShell = { pkgs, extraModules ? [] }: import ./default.nix {
+          inherit pkgs extraModules;
         };
       };
     };
