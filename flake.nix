@@ -17,13 +17,22 @@
 
       # Single declaration site for all available modules
       modules = {
-        base   = import ./modules/base.nix;
-        dotnet = import ./modules/dotnet.nix;
-        # Add every module you have here exactly once:
-        # claude      = import ./modules/claude.nix;
-        # elm         = import ./modules/elm.nix;
-        # python      = import ./modules/python.nix;
-        # ... (one line per module)
+        base         = import ./modules/base.nix;
+        claude       = import ./modules/claude.nix;
+        dotnet       = import ./modules/dotnet.nix;
+        elm          = import ./modules/elm.nix;
+        elm-land     = import ./modules/elm-land.nix;
+        elm-spa      = import ./modules/elm-spa.nix;
+        gemini       = import ./modules/gemini.nix;
+        get-shit-done = import ./modules/get-shit-done.nix;
+        hugo         = import ./modules/hugo.nix;
+        kilocode-cli = import ./modules/kilocode-cli.nix;
+        opencode     = import ./modules/opencode.nix;
+        python       = import ./modules/python.nix;
+        qwen-code    = import ./modules/qwen-code.nix;
+        rendercv     = import ./modules/rendercv.nix;
+        spec-kit     = import ./modules/spec-kit.nix;
+        swarmvault   = import ./modules/swarmvault.nix;
       };
 
       overlays = import ./overlays.nix;
