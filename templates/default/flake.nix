@@ -1,5 +1,5 @@
 {
-  description = "Isolated development shell ([tool names here])";
+  description = "Isolated development shell ([add tools here])";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,13 +16,14 @@
         overlays = devshell.overlays;
       };
 
-      # Choose modules for this project (single declaration site)
+      # Single declaration site for this project's modules
       extraModules = [
         devshell.modules.base
-        devshell.modules.dotnet
+        # devshell.modules.dotnet
         # devshell.modules.python
         # devshell.modules.elm
-        # add/remove here only
+        # devshell.modules.claude
+        # ... add/remove only here
       ];
 
       devShell = devshell.lib.mkDevShell { inherit pkgs extraModules; };
