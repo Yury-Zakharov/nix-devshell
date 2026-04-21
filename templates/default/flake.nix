@@ -30,5 +30,9 @@
     in
     {
       devShells.${system}.default = devShell;
+      
+      # CI-friendly outputs (GitHub Actions, nix build, etc.)
+      packages.${system}.default = devShell;
+      checks.${system}.default   = devShell;
     };
 }
