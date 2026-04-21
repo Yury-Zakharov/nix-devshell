@@ -6,12 +6,11 @@
   ];
 
   env = {
-    # Gemini does not fully respect GEMINI_CONFIG_DIR yet (known limitation)
-    # We set XDG paths and document the remaining global tendency
+    # Gemini CLI respects XDG_CONFIG_HOME when set (base.nix forces it to project root)
   };
 
   shellHook = ''
     echo "Gemini: $(gemini --version 2>/dev/null || true)"
-    echo "Gemini config: mostly in ~/.gemini (tool limitation). Consider monitoring ~/.gemini"
+    echo "Gemini config: fully redirected to \$XDG_CONFIG_HOME/.gemini (project root)"
   '';
 }
