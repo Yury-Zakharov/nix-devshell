@@ -25,6 +25,7 @@
         elm-spa      = import ./modules/elm-spa.nix;
         gemini       = import ./modules/gemini.nix;
         get-shit-done = import ./modules/get-shit-done.nix;
+        gsd          = import ./modules/gsd.nix;
         hugo         = import ./modules/hugo.nix;
         kilocode-cli = import ./modules/kilocode-cli.nix;
         opencode     = import ./modules/opencode.nix;
