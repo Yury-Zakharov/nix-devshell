@@ -1,29 +1,15 @@
 # Single owner: this file owns base composition and explicit per-project extension.
 # Zero implicit behaviour: overlays are applied once, early, and passed explicitly.
 
-{ pkgs ? import <nixpkgs> {
-    config.allowUnfree = true;
-    overlays = import ./overlays.nix;
-  }
+{ pkgs
 , extraModules ? []
 }:
 
 let
   # Base modules — common to ALL projects (single declaration site)
-  baseModulePaths = [
-    ./modules/base.nix
-  ];
+  baseModule = import ./modules/base.nix { inherit pkgs; };
 
-  allModulePaths = baseModulePaths ++ extraModules;
-
-  # CRITICAL: create a fresh pkgs with overlays for modules only
-  # This forces the overlay to be evaluated before any module import
-  modulePkgs = import <nixpkgs> {
-    config.allowUnfree = true;
-    overlays = import ./overlays.nix;
-  };
-
-  modules = map (path: import path { pkgs = modulePkgs; }) allModulePaths;
+  modules = [ baseModule ] ++ extraModules;
 
   merged = {
     packages = builtins.concatLists (map (m: m.packages or []) modules);
