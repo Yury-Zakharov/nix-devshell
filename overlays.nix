@@ -6,5 +6,6 @@
   (import ./overlays/get-shit-done.nix)
   (import ./overlays/swarmvault.nix)
   (import ./overlays/gsd.nix)
+  (import ./overlays/bmad-method.nix)
   # Future shared overlays go here only
 ]
