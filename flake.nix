@@ -34,6 +34,7 @@
         rendercv     = import ./modules/rendercv.nix;
         spec-kit     = import ./modules/spec-kit.nix;
         swarmvault   = import ./modules/swarmvault.nix;
+        bmad-method  = import ./modules/bmad-method.nix;
       };
 
       overlays = import ./overlays.nix;
