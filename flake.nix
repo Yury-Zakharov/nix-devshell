@@ -36,6 +36,7 @@
         swarmvault   = import ./modules/swarmvault.nix;
         bmad-method  = import ./modules/bmad-method.nix;
         gitnexus     = import ./modules/gitnexus.nix;
+        gitnexus-mcp = import ./modules/gitnexus-mcp.nix;
       };
 
       overlays = import ./overlays.nix;
