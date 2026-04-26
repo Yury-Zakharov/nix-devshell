@@ -35,6 +35,7 @@
         spec-kit     = import ./modules/spec-kit.nix;
         swarmvault   = import ./modules/swarmvault.nix;
         bmad-method  = import ./modules/bmad-method.nix;
+        gitnexus     = import ./modules/gitnexus.nix;
       };
 
       overlays = import ./overlays.nix;
