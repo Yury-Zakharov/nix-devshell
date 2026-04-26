@@ -7,5 +7,6 @@
   (import ./overlays/swarmvault.nix)
   (import ./overlays/gsd.nix)
   (import ./overlays/bmad-method.nix)
+  (import ./overlays/gitnexus.nix)
   # Future shared overlays go here only
 ]
