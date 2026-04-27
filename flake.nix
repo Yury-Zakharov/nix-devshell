@@ -23,12 +23,15 @@
         elm          = import ./modules/elm.nix;
         elm-land     = import ./modules/elm-land.nix;
         elm-spa      = import ./modules/elm-spa.nix;
+        elm-opencode = import ./modules/elm-opencode.nix;
         gemini       = import ./modules/gemini.nix;
         get-shit-done = import ./modules/get-shit-done.nix;
         gsd          = import ./modules/gsd.nix;
         hugo         = import ./modules/hugo.nix;
         kilocode-cli = import ./modules/kilocode-cli.nix;
         opencode     = import ./modules/opencode.nix;
+        opencode-skills = import ./modules/opencode-skills.nix;
+        opencode-commands = import ./modules/opencode-commands.nix;
         python       = import ./modules/python.nix;
         qwen-code    = import ./modules/qwen-code.nix;
         rendercv     = import ./modules/rendercv.nix;

@@ -2,9 +2,9 @@
 
 Reusable Nix devshell modules and templates.
 
-**Goal**: every development project gets an isolated, project-root-only environment.  
+**Goal**: Every development project gets a fully isolated, project-root-only environment.  
 No global state, no `~/` paths, no implicit behaviour.  
-Single declaration site for every module and overlay.
+Single declaration site for every module, overlay, and tool.
 
 ## Create a new project
 
@@ -12,40 +12,78 @@ Single declaration site for every module and overlay.
 nix flake new myproject -t github:Yury-Zakharov/nix-devshell
 cd myproject
 
-# Edit flake.nix → uncomment only the modules you need
-# (single declaration site for this project)
+# Edit flake.nix → choose the modules you need
 direnv allow
 ```
+
+## OpenCode Configuration (with free-first model rotation)
+
+OpenCode is pre-configured with **7 generous free-tier providers** and automatic fallback:
+
+- Free models are tried first (`local-qwen` → Gemini Flash → Groq → Cerebras → DeepSeek → Mistral → OpenRouter)
+- Only after all free limits are exhausted does it ask for confirmation before using a paid model (`zai-glm`).
+
+API keys are provided via `.envrc` (api keys never committed):
+
+```bash
+require_pass() {
+  if ! pass "$1" >/dev/null 2>&1; then
+    echo "Missing secret: $1"
+    return 1
+  fi
+}
+
+export_secret() {
+  local path="$1"
+  local var="$2"
+  export "$var=$(pass "$path")"
+}
+
+require_pass user/llm/gemini/api-key
+require_pass user/llm/groq/api-key
+require_pass user/llm/cerebras/api-key
+require_pass user/llm/deepseek/api-key
+require_pass user/llm/mistral/api-key
+require_pass user/llm/openrouter/api-key
+require_pass user/llm/z-ai/api-key
+
+export_secret user/llm/gemini/api-key GEMINI_API_KEY
+export_secret user/llm/groq/api-key GROQ_API_KEY
+export_secret user/llm/cerebras/api-key CEREBRAS_API_KEY
+export_secret user/llm/deepseek/api-key DEEPSEEK_API_KEY
+export_secret user/llm/mistral/api-key MISTRAL_API_KEY
+export_secret user/llm/openrouter/api-key OPENROUTER_API_KEY
+export_secret user/llm/z-ai/api-key ZAI_API_KEY
+```
+
+Role-based models are already set in `.opencode/opencode.jsonc`:
+- `planModel` → Architect / planning
+- `defaultModel` → Coder / implementation
+- `fastModel` → Tester / reviewer
+
+## Available modules (add only what you need)
+
+- `base` – common XDG isolation + opencode + podman
+- `dotnet` – .NET SDK + NuGet.Mcp.Server + RoslynMcp.Server
+- `opencode` – full OpenCode with 7 free providers + fallback
+- `opencode-skills` – declarative skills (Elm, .NET, etc.)
+- `opencode-commands` – convenient aliases
+- `elm` + `elm-opencode` – Elm toolchain + OpenCode support
+- `gitnexus` + `gitnexus-mcp` – knowledge graph + MCP server
+- `gsd`, `bmad-method` – autonomous agents
 
 ## Update an existing project
 
 ```bash
-cd myproject
-nix flake update devshell   # updates the template + all modules/overlays
-direnv allow
+nix flake update devshell && direnv allow
 ```
 
-## Introduce a new module
+## Add a new module / overlay
 
-1. Create `modules/my-new-tool.nix` (must accept `{ pkgs }:` and return `{ packages, env?, shellHook? }`).
-2. Add it to the single declaration site in `flake.nix`:
-```nix
-modules = {
-  # ... existing modules
-  my-new-tool = import ./modules/my-new-tool.nix;
-};
-```
-3. (Optional) Add an example to `templates/default/flake.nix` in the `extraModules` list.
-4. Commit and push.
+See `modules/` and `overlays/` — single declaration site in `flake.nix`.
 
-## Introduce a new overlay
+---
 
-1. Create `overlays/my-overlay.nix` (standard `final: prev: { … }` form).
-2. Add it to the single declaration site in `overlays.nix`.
-3. Rebuild any test project (`nix flake update devshell && direnv allow`).
-------------
+**Made for multi-machine, zero-drift, fully isolated development.**
 
-All files live inside the project root (`.cache/`, `.config/`, `.local/share/`, `.venv/`, `.nuget/`, `.swarmvault/`, etc.).
-The repo is public and designed for GitHub CI/CD (see `packages.default` and `checks.default` in the template).
-
-Made for multi-machine, zero-drift development.
+Everything lives inside the project root (`.opencode/`, `.gitnexus/`, `.nuget/`, `.cache/`, etc.).
