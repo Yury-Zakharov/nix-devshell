@@ -23,6 +23,7 @@
         elm          = import ./modules/elm.nix;
         elm-land     = import ./modules/elm-land.nix;
         elm-spa      = import ./modules/elm-spa.nix;
+        elm-opencode = import ./modules/elm-opencode.nix;
         gemini       = import ./modules/gemini.nix;
         get-shit-done = import ./modules/get-shit-done.nix;
         gsd          = import ./modules/gsd.nix;
