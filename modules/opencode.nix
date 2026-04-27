@@ -41,7 +41,7 @@
     "oh-my-opencode"
   ],
 
-  // MCP servers — fully declarative and project-local
+  // MCP servers — all enabled by default
   "mcp": {
     "gitnexus": {
       "type": "local",
@@ -53,16 +53,15 @@
       "url": "https://api.context7.com/mcp",
       "apiKey": "${CONTEXT7_API_KEY}"
     },
-    // .NET-friendly MCPs (add when you install the tools)
     "nuget": {
       "type": "local",
       "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"],
-      "enabled": false
+      "enabled": true
     },
     "roslyn": {
       "type": "local",
       "command": ["roslyn-mcp"],
-      "enabled": false
+      "enabled": true
     }
   },
 
@@ -75,10 +74,10 @@
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Final declarative opencode.jsonc (with .NET MCP examples)"
+      echo "✅ Final opencode.jsonc with NuGet.Mcp.Server + RoslynMcp.Server enabled"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode fully configured and ready"
+    echo "OpenCode fully configured and ready for .NET development"
   '';
 }
