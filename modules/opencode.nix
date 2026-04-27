@@ -31,58 +31,45 @@
       "model": "glm-4-plus"
     }
   },
-  // Architect role — high-level planning & design (strong reasoning)
-  "planModel": "zai-glm",
 
-  // Coder role — implementation only (never changes architecture)
-  "defaultModel": "local-qwen",
+  // Role-based models (free-first)
+  "defaultModel": "local-qwen",   // Coder / main work
+  "planModel":    "local-qwen",   // Architect / planning
+  "fastModel":    "local-qwen",   // Tester / quick tasks
 
-  // Tester / Reviewer role — fast validation, tests, small fixes
-  "fastModel": "local-qwen",
-
-  // Plugins
+  // Fallback plugin — free-first rotation + eventual paid fallback
   "plugin": [
     "micode",
-    "oh-my-opencode"
+    "oh-my-opencode",
+    "opencode-rate-limit-fallback"   // ← enables automatic model rotation on rate limits
   ],
 
-  // MCP servers — all enabled by default
   "mcp": {
-    "gitnexus": {
-      "type": "local",
-      "command": ["gitnexus", "mcp"],
-      "enabled": true
-    },
-    "context7": {
-      "type": "remote",
-      "url": "https://api.context7.com/mcp",
-      "apiKey": "${CONTEXT7_API_KEY}"
-    },
-    "nuget": {
-      "type": "local",
-      "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"],
-      "enabled": true
-    },
-    "roslyn": {
-      "type": "local",
-      "command": ["roslyn-mcp"],
-      "enabled": true
-    }
+    "gitnexus": { "type": "local", "command": ["gitnexus", "mcp"], "enabled": true },
+    "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "${CONTEXT7_API_KEY}" },
+    "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": true },
+    "roslyn":   { "type": "local", "command": ["roslyn-mcp"], "enabled": true }
   },
 
-  // Custom tools
   "tools": {
-    "gsd":   { "command": ["gsd"],   "description": "GSD-2 autonomous coding agent" },
-    "bmad":  { "command": ["bmad-method"], "description": "BMAD-METHOD breakthrough workflow" }
+    "gsd":  { "command": ["gsd"],   "description": "GSD-2 autonomous coding agent" },
+    "bmad": { "command": ["bmad-method"], "description": "BMAD-METHOD breakthrough workflow" }
   },
 
-  "skills": { "autoLoad": true }
+  "skills": { "autoLoad": true },
+
+  // Fallback configuration (free → paid)
+  "fallback": {
+    "enabled": true,
+    "chain": ["local-qwen", "zai-glm"],
+    "askBeforePaid": true
+  }
 }
 JSONC
-      echo "✅ Final opencode.jsonc with NuGet.Mcp.Server + RoslynMcp.Server enabled"
+      echo "✅ Created opencode.jsonc with free-first fallback (local-qwen → zai-glm)"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode fully configured and ready for .NET development"
+    echo "OpenCode ready with free-first model rotation"
   '';
 }
