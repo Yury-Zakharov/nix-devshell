@@ -18,7 +18,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Models
+  // Models — generous free tier, modern, no deposit required
   "models": {
     "local-qwen": {
       "provider": "openai-compatible",
@@ -26,22 +26,69 @@
       "model": "qwen3-30b-a3b-q5_k_m",
       "apiKey": "dummy"
     },
+
+    "gemini-flash": {
+      "provider": "google",
+      "model": "gemini-2.5-flash",
+      "apiKey": "${GEMINI_API_KEY}"
+    },
+    "gemini-pro": {
+      "provider": "google",
+      "model": "gemini-2.5-pro",
+      "apiKey": "${GEMINI_API_KEY}"
+    },
+
+    "groq-llama": {
+      "provider": "openai-compatible",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "model": "llama-4-scout-17b",
+      "apiKey": "${GROQ_API_KEY}"
+    },
+
+    "cerebras-llama": {
+      "provider": "openai-compatible",
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "model": "llama-3.3-70b",
+      "apiKey": "${CEREBRAS_API_KEY}"
+    },
+
+    "deepseek-r1": {
+      "provider": "openai-compatible",
+      "baseUrl": "https://api.deepseek.com",
+      "model": "deepseek-reasoner",
+      "apiKey": "${DEEPSEEK_API_KEY}"
+    },
+
+    "mistral-large": {
+      "provider": "mistral",
+      "model": "mistral-large-3",
+      "apiKey": "${MISTRAL_API_KEY}"
+    },
+
+    "openrouter-free": {
+      "provider": "openai-compatible",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "model": "meta-llama/llama-4-scout-17b",
+      "apiKey": "${OPENROUTER_API_KEY}"
+    },
+
     "zai-glm": {
       "provider": "zai",
-      "model": "glm-4-plus"
+      "model": "glm-4-plus",
+      "apiKey": "${ZAI_API_KEY}"
     }
   },
 
-  // Role-based models (free-first)
-  "defaultModel": "local-qwen",   // Coder / main work
-  "planModel":    "local-qwen",   // Architect / planning
-  "fastModel":    "local-qwen",   // Tester / quick tasks
+  // Role-based model assignment
+  "defaultModel": "local-qwen",   // Coder role — implementation
+  "planModel":    "local-qwen",   // Architect role — planning & design
+  "fastModel":    "local-qwen",   // Tester / Reviewer role — quick validation
 
-  // Fallback plugin — free-first rotation + eventual paid fallback
+  // Fallback plugin — free-first rotation
   "plugin": [
     "micode",
     "oh-my-opencode",
-    "opencode-rate-limit-fallback"   // ← enables automatic model rotation on rate limits
+    "opencode-rate-limit-fallback"
   ],
 
   "mcp": {
@@ -58,15 +105,24 @@
 
   "skills": { "autoLoad": true },
 
-  // Fallback configuration (free → paid)
+  // Free-first fallback chain (paid only as last resort)
   "fallback": {
     "enabled": true,
-    "chain": ["local-qwen", "zai-glm"],
+    "chain": [
+      "local-qwen",
+      "gemini-flash",
+      "groq-llama",
+      "cerebras-llama",
+      "deepseek-r1",
+      "mistral-large",
+      "openrouter-free",
+      "zai-glm"
+    ],
     "askBeforePaid": true
   }
 }
 JSONC
-      echo "✅ Created opencode.jsonc with free-first fallback (local-qwen → zai-glm)"
+      echo "✅ Created opencode.jsonc with 7 generous free-tier providers + role-based models"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
