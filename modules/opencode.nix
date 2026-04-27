@@ -18,77 +18,41 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Models — generous free tier, modern, no deposit required
-  "models": {
-    "local-qwen": {
-      "provider": "openai-compatible",
-      "baseUrl": "http://127.0.0.1:8080/v1",
-      "model": "qwen3-30b-a3b-q5_k_m",
-      "apiKey": "dummy"
-    },
+  // Default model for normal coding tasks
+  "model": "local-qwen",
 
-    "gemini-flash": {
-      "provider": "google",
-      "model": "gemini-2.5-flash",
+  // Provider configurations (using env vars)
+  "provider": {
+    "google": {
       "apiKey": "{env:GEMINI_API_KEY}"
     },
-    "gemini-pro": {
-      "provider": "google",
-      "model": "gemini-2.5-pro",
-      "apiKey": "{env:GEMINI_API_KEY}"
-    },
-
-    "groq-llama": {
-      "provider": "openai-compatible",
+    "groq": {
       "baseUrl": "https://api.groq.com/openai/v1",
-      "model": "llama-4-scout-17b",
       "apiKey": "{env:GROQ_API_KEY}"
     },
-
-    "cerebras-llama": {
-      "provider": "openai-compatible",
+    "cerebras": {
       "baseUrl": "https://api.cerebras.ai/v1",
-      "model": "llama-3.3-70b",
       "apiKey": "{env:CEREBRAS_API_KEY}"
     },
-
-    "deepseek-r1": {
-      "provider": "openai-compatible",
+    "deepseek": {
       "baseUrl": "https://api.deepseek.com",
-      "model": "deepseek-reasoner",
       "apiKey": "{env:DEEPSEEK_API_KEY}"
     },
-
-    "mistral-large": {
-      "provider": "mistral",
-      "model": "mistral-large-3",
+    "mistral": {
       "apiKey": "{env:MISTRAL_API_KEY}"
     },
-
-    "openrouter-free": {
-      "provider": "openai-compatible",
+    "openrouter": {
       "baseUrl": "https://openrouter.ai/api/v1",
-      "model": "meta-llama/llama-4-scout-17b",
       "apiKey": "{env:OPENROUTER_API_KEY}"
     },
-
-    "zai-glm": {
-      "provider": "zai",
-      "model": "glm-4-plus",
+    "zai": {
       "apiKey": "{env:ZAI_API_KEY}"
     }
   },
 
-  // Role-based model assignment
-  "defaultModel": "local-qwen",   // Coder role — implementation
-  "planModel":    "local-qwen",   // Architect role — planning & design
-  "fastModel":    "local-qwen",   // Tester / Reviewer role — quick validation
-
-  // Fallback plugin — free-first rotation
   "plugin": [
     "micode",
-    "oh-my-opencode",
-    "opencode-rate-limit-fallback"
+    "oh-my-opencode"
   ],
 
   "mcp": {
@@ -103,29 +67,13 @@
     "bmad": { "command": ["bmad-method"], "description": "BMAD-METHOD breakthrough workflow" }
   },
 
-  "skills": { "autoLoad": true },
-
-  // Free-first fallback chain (paid only as last resort)
-  "fallback": {
-    "enabled": true,
-    "chain": [
-      "local-qwen",
-      "gemini-flash",
-      "groq-llama",
-      "cerebras-llama",
-      "deepseek-r1",
-      "mistral-large",
-      "openrouter-free",
-      "zai-glm"
-    ],
-    "askBeforePaid": true
-  }
+  "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created opencode.jsonc with correct {env:VAR} syntax"
+      echo "✅ Created valid minimal opencode.jsonc (compatible with current OpenCode)"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode ready with free-first model rotation"
+    echo "OpenCode ready"
   '';
 }
