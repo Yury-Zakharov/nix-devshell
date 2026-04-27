@@ -3,11 +3,11 @@
 {
   shellHook = ''
     SKILLS_DIR="$OPENCODE_CONFIG_DIR/skills"
-    mkdir -p "$SKILLS_DIR"
+    mkdir -p "$SKILLS_DIR/roles"
 
-    # Declarative skills from nix-devshell repo (single source of truth)
+    # Copy all declarative skills and roles
     cp -r ${./opencode-skills}/* "$SKILLS_DIR/" 2>/dev/null || true
 
-    echo "OpenCode skills loaded from nix-devshell/modules/opencode-skills/"
+    echo "OpenCode skills + roles loaded into .opencode/skills/"
   '';
 }
