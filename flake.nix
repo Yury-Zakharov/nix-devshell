@@ -29,6 +29,7 @@
         hugo         = import ./modules/hugo.nix;
         kilocode-cli = import ./modules/kilocode-cli.nix;
         opencode     = import ./modules/opencode.nix;
+        opencode-skills = import ./modules/opencode-skills.nix;
         python       = import ./modules/python.nix;
         qwen-code    = import ./modules/qwen-code.nix;
         rendercv     = import ./modules/rendercv.nix;

@@ -6,63 +6,62 @@
   ];
 
   env = {
-    # OpenCode respects these for full project isolation
     OPENCODE_CONFIG_DIR = "$PWD/.opencode";
     OPENCODE_CACHE_DIR  = "$PWD/.opencode/cache";
   };
 
   shellHook = ''
-    mkdir -p "$OPENCODE_CONFIG_DIR"
+    mkdir -p "$OPENCODE_CONFIG_DIR" "$OPENCODE_CONFIG_DIR/skills"
 
-    # Minimal declarative config — single source of truth per project
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cat > "$OPENCODE_CONFIG_DIR/opencode.jsonc" << 'JSONC'
 {
-  // OpenCode configuration — fully declarative and project-local
+  "$schema": "https://opencode.ai/config.json",
+
   "models": {
     "local-qwen": {
       "provider": "openai-compatible",
       "baseUrl": "http://127.0.0.1:8080/v1",
       "model": "qwen3-30b-a3b-q5_k_m",
-      "apiKey": "dummy"   // not used by llama.cpp but required by spec
+      "apiKey": "dummy"
     },
     "zai-glm": {
       "provider": "zai",
-      "model": "glm-4-plus"   // replace with your exact GLM model name
-      // API key will be injected via env or secrets
+      "model": "glm-4-plus"
     }
-    // Add more models here (single declaration site)
   },
-
-  // Preferred model per task type (community favourite pattern)
   "defaultModel": "local-qwen",
   "planModel":    "local-qwen",
   "fastModel":    "local-qwen",
 
-  // MCP servers (all run locally or via env vars)
+  "plugin": [
+    "micode",
+    "oh-my-opencode"
+  ],
+
   "mcp": {
     "gitnexus": {
       "type": "local",
-      "command": ["gitnexus", "mcp"]
+      "command": ["gitnexus", "mcp"],
+      "enabled": true
     },
     "context7": {
       "type": "remote",
       "url": "https://api.context7.com/mcp",
-      "apiKey": "${CONTEXT7_API_KEY}"   // injected by you or secrets.nix
+      "apiKey": "${CONTEXT7_API_KEY}"
     }
-    // deepwiki + other .NET-friendly MCPs added in Phase 2
+    // .NET-friendly MCP examples (add when you have them):
+    // "nuget": { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"] },
+    // "roslyn": { "type": "local", "command": ["roslyn-mcp"] }
   },
 
-  // Skills & Commands will be auto-discovered from .opencode/skills/
-  "skills": {
-    "autoLoad": true
-  }
+  "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created minimal opencode.jsonc (project root)"
+      echo "✅ Created full declarative opencode.jsonc"
     fi
 
-    echo "OpenCode ready — config: $OPENCODE_CONFIG_DIR/opencode.jsonc"
-    echo "Run: opencode to start"
+    opencode plugin install --yes 2>/dev/null || true
+    echo "OpenCode ready (config: $OPENCODE_CONFIG_DIR/opencode.jsonc)"
   '';
 }
