@@ -31,9 +31,14 @@
       "model": "glm-4-plus"
     }
   },
+  // Architect role — high-level planning & design (strong reasoning)
+  "planModel": "zai-glm",
+
+  // Coder role — implementation only (never changes architecture)
   "defaultModel": "local-qwen",
-  "planModel":    "local-qwen",
-  "fastModel":    "local-qwen",
+
+  // Tester / Reviewer role — fast validation, tests, small fixes
+  "fastModel": "local-qwen",
 
   // Plugins
   "plugin": [
