@@ -18,41 +18,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Default model for normal coding tasks
+  // Default model (you can change this in the file later)
   "model": "local-qwen",
 
-  // Provider configurations (using env vars)
+  // Provider configurations using env variables
   "provider": {
-    "google": {
-      "apiKey": "{env:GEMINI_API_KEY}"
-    },
-    "groq": {
-      "baseUrl": "https://api.groq.com/openai/v1",
-      "apiKey": "{env:GROQ_API_KEY}"
-    },
-    "cerebras": {
-      "baseUrl": "https://api.cerebras.ai/v1",
-      "apiKey": "{env:CEREBRAS_API_KEY}"
-    },
-    "deepseek": {
-      "baseUrl": "https://api.deepseek.com",
-      "apiKey": "{env:DEEPSEEK_API_KEY}"
-    },
-    "mistral": {
-      "apiKey": "{env:MISTRAL_API_KEY}"
-    },
-    "openrouter": {
-      "baseUrl": "https://openrouter.ai/api/v1",
-      "apiKey": "{env:OPENROUTER_API_KEY}"
-    },
-    "zai": {
-      "apiKey": "{env:ZAI_API_KEY}"
-    }
+    "google":    { "apiKey": "{env:GEMINI_API_KEY}" },
+    "groq":      { "baseUrl": "https://api.groq.com/openai/v1",      "apiKey": "{env:GROQ_API_KEY}" },
+    "cerebras":  { "baseUrl": "https://api.cerebras.ai/v1",         "apiKey": "{env:CEREBRAS_API_KEY}" },
+    "deepseek":  { "baseUrl": "https://api.deepseek.com",           "apiKey": "{env:DEEPSEEK_API_KEY}" },
+    "mistral":   { "apiKey": "{env:MISTRAL_API_KEY}" },
+    "openrouter": { "baseUrl": "https://openrouter.ai/api/v1",      "apiKey": "{env:OPENROUTER_API_KEY}" },
+    "zai":       { "apiKey": "{env:ZAI_API_KEY}" }
   },
 
   "plugin": [
     "micode",
     "oh-my-opencode"
+    // "opencode-rate-limit-fallback"   # disabled for now until we confirm the exact name/config
   ],
 
   "mcp": {
@@ -62,15 +45,10 @@
     "roslyn":   { "type": "local", "command": ["roslyn-mcp"], "enabled": true }
   },
 
-  "tools": {
-    "gsd":  { "command": ["gsd"],   "description": "GSD-2 autonomous coding agent" },
-    "bmad": { "command": ["bmad-method"], "description": "BMAD-METHOD breakthrough workflow" }
-  },
-
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created valid minimal opencode.jsonc (compatible with current OpenCode)"
+      echo "✅ Created minimal valid opencode.jsonc"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
