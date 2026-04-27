@@ -18,6 +18,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
+  // Models
   "models": {
     "local-qwen": {
       "provider": "openai-compatible",
@@ -34,11 +35,13 @@
   "planModel":    "local-qwen",
   "fastModel":    "local-qwen",
 
+  // Plugins
   "plugin": [
     "micode",
     "oh-my-opencode"
   ],
 
+  // MCP servers
   "mcp": {
     "gitnexus": {
       "type": "local",
@@ -50,18 +53,37 @@
       "url": "https://api.context7.com/mcp",
       "apiKey": "${CONTEXT7_API_KEY}"
     }
-    // .NET-friendly MCP examples (add when you have them):
-    // "nuget": { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"] },
-    // "roslyn": { "type": "local", "command": ["roslyn-mcp"] }
+    // .NET-friendly MCP examples (add when ready):
+    // "nuget":   { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"] },
+    // "roslyn":  { "type": "local", "command": ["roslyn-mcp"] }
   },
 
-  "skills": { "autoLoad": true }
+  // Custom tools — gsd and bmad are now directly usable by OpenCode
+  "tools": {
+    "gsd": {
+      "command": ["gsd"],
+      "description": "GSD-2 autonomous coding agent"
+    },
+    "bmad": {
+      "command": ["bmad-method"],
+      "description": "BMAD-METHOD breakthrough development workflow"
+    }
+  },
+
+  // Skills
+  "skills": {
+    "autoLoad": true
+  }
 }
 JSONC
-      echo "✅ Created full declarative opencode.jsonc"
+      echo "✅ Created full declarative opencode.jsonc with gsd + bmad integration"
     fi
 
+    # Auto-install plugins
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode ready (config: $OPENCODE_CONFIG_DIR/opencode.jsonc)"
+
+    echo "OpenCode ready"
+    echo "Config:     $OPENCODE_CONFIG_DIR/opencode.jsonc"
+    echo "Tools:      gsd and bmad-method are now available to OpenCode"
   '';
 }

@@ -30,6 +30,7 @@
         kilocode-cli = import ./modules/kilocode-cli.nix;
         opencode     = import ./modules/opencode.nix;
         opencode-skills = import ./modules/opencode-skills.nix;
+        opencode-commands = import ./modules/opencode-commands.nix;
         python       = import ./modules/python.nix;
         qwen-code    = import ./modules/qwen-code.nix;
         rendercv     = import ./modules/rendercv.nix;
