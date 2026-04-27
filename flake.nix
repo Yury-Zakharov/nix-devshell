@@ -20,6 +20,7 @@
         base         = import ./modules/base.nix;
         claude       = import ./modules/claude.nix;
         dotnet       = import ./modules/dotnet.nix;
+        avalonia     = import ./modules/avalonia.nix;
         elm          = import ./modules/elm.nix;
         elm-land     = import ./modules/elm-land.nix;
         elm-spa      = import ./modules/elm-spa.nix;
