@@ -3,7 +3,7 @@
 {
   packages = [
     pkgs.opencode
-    pkgs.nodejs          # for npx (context7)
+    pkgs.nodejs
   ];
 
   env = {
@@ -13,13 +13,6 @@
 
   shellHook = ''
     mkdir -p "$OPENCODE_CONFIG_DIR" "$OPENCODE_CONFIG_DIR/skills"
-
-    # Export full PATH so OpenCode can find MCP binaries (gitnexus, roslyn-mcp, etc.)
-    export PATH="${pkgs.lib.makeBinPath [
-      pkgs.opencode
-      pkgs.nodejs
-      pkgs.git               # just in case
-    ]}:$PATH"
 
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cat > "$OPENCODE_CONFIG_DIR/opencode.jsonc" << 'JSONC'
@@ -44,7 +37,7 @@
   ],
 
   "mcp": {
-    "gitnexus": { "type": "local", "command": ["gitnexus", "mcp"], "enabled": true },
+    "gitnexus": { "type": "local", "command": ["${pkgs.gitnexus}/bin/gitnexus", "mcp"], "enabled": true },
     "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "{env:CONTEXT7_API_KEY}" },
     "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": true },
     "roslyn":   { "type": "local", "command": ["roslyn-mcp"], "enabled": true }
@@ -53,10 +46,10 @@
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created minimal valid opencode.jsonc"
+      echo "✅ Created opencode.jsonc with full Nix store paths for MCPs"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode ready (PATH exported for MCP servers)"
+    echo "OpenCode ready"
   '';
 }
