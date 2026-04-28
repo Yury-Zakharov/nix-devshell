@@ -6,7 +6,18 @@ let
     text = builtins.toJSON {
       "$schema" = "https://opencode.ai/config.json";
 
+      # Default model for normal use
       model = "local-qwen";
+
+      # Full definition of all models
+      models = {
+        local-qwen = {
+          provider = "openai-compatible";
+          baseUrl = "http://127.0.0.1:8080/v1";
+          model = "qwen3-30b-a3b-q5_k_m";
+          apiKey = "dummy";
+        };
+      };
 
       provider = {
         google    = { apiKey = "{env:GEMINI_API_KEY}"; };
@@ -18,10 +29,7 @@ let
         zai       = { apiKey = "{env:ZAI_API_KEY}"; };
       };
 
-      plugin = [
-        "micode"
-        "oh-my-openagent"
-      ];
+      plugin = [ "micode" "oh-my-openagent" ];
 
       mcp = {
         context7 = { type = "remote"; url = "https://api.context7.com/mcp"; apiKey = "{env:CONTEXT7_API_KEY}"; };
@@ -51,7 +59,7 @@ in
 
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cp ${opencodeConfig} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
-      echo "✅ Created clean opencode.jsonc (using writeTextFile)"
+      echo "✅ Created clean opencode.jsonc with proper local-qwen definition"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
