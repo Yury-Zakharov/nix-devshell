@@ -39,7 +39,7 @@
   "mcp": {
     "gitnexus": { 
       "type": "local", 
-      "command": ["bash", "-c", "exec ${pkgs.gitnexus}/bin/gitnexus mcp"], 
+      "command": ["npx", "gitnexus", "mcp"], 
       "enabled": true 
     },
     "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "{env:CONTEXT7_API_KEY}" },
@@ -50,7 +50,7 @@
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created opencode.jsonc with aggressive gitnexus fix (bash wrapper)"
+      echo "✅ Created opencode.jsonc with npx-based gitnexus MCP"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
