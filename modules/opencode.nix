@@ -3,6 +3,7 @@
 {
   packages = [
     pkgs.opencode
+    pkgs.nodejs   # needed for npx (context7 MCP)
   ];
 
   env = {
@@ -18,10 +19,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Default model (you can change this in the file later)
   "model": "local-qwen",
 
-  // Provider configurations using env variables
   "provider": {
     "google":    { "apiKey": "{env:GEMINI_API_KEY}" },
     "groq":      { "baseUrl": "https://api.groq.com/openai/v1",      "apiKey": "{env:GROQ_API_KEY}" },
@@ -35,7 +34,6 @@
   "plugin": [
     "micode",
     "oh-my-opencode"
-    // "opencode-rate-limit-fallback"   # disabled for now until we confirm the exact name/config
   ],
 
   "mcp": {
