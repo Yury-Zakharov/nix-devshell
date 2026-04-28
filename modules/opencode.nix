@@ -46,7 +46,7 @@
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created opencode.jsonc with Roslyn MCP enabled"
+      echo "✅ Created opencode.jsonc with Roslyn and NuGet using full dotnet tool run"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
