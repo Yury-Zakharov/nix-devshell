@@ -37,16 +37,32 @@
   ],
 
   "mcp": {
-    "gitnexus": { "type": "local", "command": ["${pkgs.gitnexus}/bin/gitnexus", "mcp"], "enabled": true },
-    "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "{env:CONTEXT7_API_KEY}" },
-    "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": true },
-    "roslyn":   { "type": "local", "command": ["roslyn-mcp"], "enabled": true }
+    "gitnexus": { 
+      "type": "local", 
+      "command": ["${pkgs.gitnexus}/bin/gitnexus", "mcp"], 
+      "enabled": true 
+    },
+    "context7": { 
+      "type": "remote", 
+      "url": "https://api.context7.com/mcp", 
+      "apiKey": "{env:CONTEXT7_API_KEY}" 
+    },
+    "nuget": { 
+      "type": "local", 
+      "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], 
+      "enabled": true 
+    },
+    "roslyn": { 
+      "type": "local", 
+      "command": ["roslyn-mcp"], 
+      "enabled": true 
+    }
   },
 
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created opencode.jsonc with full Nix store paths for MCPs"
+      echo "✅ Created opencode.jsonc with full Nix store paths"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
