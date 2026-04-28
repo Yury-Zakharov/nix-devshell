@@ -6,20 +6,23 @@ let
     text = builtins.toJSON {
       "$schema" = "https://opencode.ai/config.json";
 
-      # Default model for normal use
-      model = "local-qwen";
-
-      # Full definition of all models
-      models = {
-        local-qwen = {
-          provider = "openai-compatible";
-          baseUrl = "http://127.0.0.1:8080/v1";
-          model = "qwen3-30b-a3b-q5_k_m";
-          apiKey = "dummy";
-        };
-      };
+      # Default model — must match a key in the "provider" section below
+      model = "local-llama/qwen3-30b-a3b-q5_k_m";
 
       provider = {
+        # Local llama.cpp server
+        "local-llama" = {
+          npm = "@ai-sdk/openai-compatible";
+          options = {
+            baseURL = "http://127.0.0.1:8080/v1";
+          };
+          models = {
+            "qwen3-30b-a3b-q5_k_m" = {
+              name = "Qwen3 30B (local)";
+            };
+          };
+        };
+
         google    = { apiKey = "{env:GEMINI_API_KEY}"; };
         groq      = { baseUrl = "https://api.groq.com/openai/v1"; apiKey = "{env:GROQ_API_KEY}"; };
         cerebras  = { baseUrl = "https://api.cerebras.ai/v1"; apiKey = "{env:CEREBRAS_API_KEY}"; };
@@ -29,7 +32,10 @@ let
         zai       = { apiKey = "{env:ZAI_API_KEY}"; };
       };
 
-      plugin = [ "micode" "oh-my-openagent" ];
+      plugin = [
+        "micode"
+        "oh-my-openagent"
+      ];
 
       mcp = {
         context7 = { type = "remote"; url = "https://api.context7.com/mcp"; apiKey = "{env:CONTEXT7_API_KEY}"; };
@@ -59,7 +65,7 @@ in
 
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cp ${opencodeConfig} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
-      echo "✅ Created clean opencode.jsonc with proper local-qwen definition"
+      echo "✅ Created clean opencode.jsonc with proper local llama.cpp definition"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
