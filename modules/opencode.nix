@@ -22,18 +22,18 @@
   "model": "local-qwen",
 
   "provider": {
-    "google":    { "apiKey": "{env:GEMINI_API_KEY}" },
-    "groq":      { "baseUrl": "https://api.groq.com/openai/v1",      "apiKey": "{env:GROQ_API_KEY}" },
-    "cerebras":  { "baseUrl": "https://api.cerebras.ai/v1",         "apiKey": "{env:CEREBRAS_API_KEY}" },
-    "deepseek":  { "baseUrl": "https://api.deepseek.com",           "apiKey": "{env:DEEPSEEK_API_KEY}" },
-    "mistral":   { "apiKey": "{env:MISTRAL_API_KEY}" },
+    "google":     { "apiKey": "{env:GEMINI_API_KEY}" },
+    "groq":       { "baseUrl": "https://api.groq.com/openai/v1",      "apiKey": "{env:GROQ_API_KEY}" },
+    "cerebras":   { "baseUrl": "https://api.cerebras.ai/v1",         "apiKey": "{env:CEREBRAS_API_KEY}" },
+    "deepseek":   { "baseUrl": "https://api.deepseek.com",           "apiKey": "{env:DEEPSEEK_API_KEY}" },
+    "mistral":    { "apiKey": "{env:MISTRAL_API_KEY}" },
     "openrouter": { "baseUrl": "https://openrouter.ai/api/v1",      "apiKey": "{env:OPENROUTER_API_KEY}" },
-    "zai":       { "apiKey": "{env:ZAI_API_KEY}" }
+    "zai":        { "apiKey": "{env:ZAI_API_KEY}" }
   },
 
   "plugin": [
     "micode",
-    "oh-my-opencode"
+    "oh-my-openagent"
   ],
 
   "mcp": {
@@ -46,10 +46,10 @@
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created stable minimal opencode.jsonc (only reliable MCPs enabled)"
+      echo "✅ Created clean opencode.jsonc"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
-    echo "OpenCode ready (stable configuration)"
+    echo "OpenCode ready"
   '';
 }
