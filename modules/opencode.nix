@@ -39,14 +39,14 @@
   "mcp": {
     "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "{env:CONTEXT7_API_KEY}" },
     "gitnexus": { "type": "local", "command": ["gitnexus", "mcp"], "enabled": false },
-    "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": false },
-    "roslyn":   { "type": "local", "command": ["roslyn-mcp"], "enabled": false }
+    "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": true },
+    "roslyn":   { "type": "local", "command": ["dotnet", "tool", "run", "RoslynMcp.Server"], "enabled": true }
   },
 
   "skills": { "autoLoad": true }
 }
 JSONC
-      echo "✅ Created minimal stable opencode.jsonc (gitnexus MCP disabled)"
+      echo "✅ Created opencode.jsonc with Roslyn MCP enabled"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
