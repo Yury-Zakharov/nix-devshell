@@ -3,7 +3,7 @@
 {
   packages = [
     pkgs.opencode
-    pkgs.nodejs   # needed for npx (context7 MCP)
+    pkgs.nodejs          # only for npx (context7 MCP)
   ];
 
   env = {
