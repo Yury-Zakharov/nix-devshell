@@ -67,8 +67,11 @@ in
     # Install btca globally via bun to silence micode warning
     if ! command -v btca >/dev/null 2>&1; then
       echo "→ Installing btca for micode plugin (one-time)..."
-      bun add -g btca
+      mkdir -p "$OPENCODE_CACHE_DIR/.bun"
+      cd "$OPENCODE_CACHE_DIR/.bun"
+      bun add -g btca --prefix "$OPENCODE_CACHE_DIR/.bun"
     fi
+    export PATH="$OPENCODE_CACHE_DIR/.bun/bin:$PATH"
 
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cp ${opencodeConfig} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
