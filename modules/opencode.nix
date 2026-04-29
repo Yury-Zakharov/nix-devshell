@@ -23,13 +23,13 @@ let
           };
         };
 
-        google    = { apiKey = "{env:GEMINI_API_KEY}"; };
-        groq      = { baseUrl = "https://api.groq.com/openai/v1"; apiKey = "{env:GROQ_API_KEY}"; };
-        cerebras  = { baseUrl = "https://api.cerebras.ai/v1"; apiKey = "{env:CEREBRAS_API_KEY}"; };
-        deepseek  = { baseUrl = "https://api.deepseek.com"; apiKey = "{env:DEEPSEEK_API_KEY}"; };
-        mistral   = { apiKey = "{env:MISTRAL_API_KEY}"; };
+        google = { apiKey = "{env:GEMINI_API_KEY}"; };
+        groq = { baseUrl = "https://api.groq.com/openai/v1"; apiKey = "{env:GROQ_API_KEY}"; };
+        cerebras = { baseUrl = "https://api.cerebras.ai/v1"; apiKey = "{env:CEREBRAS_API_KEY}"; };
+        deepseek = { baseUrl = "https://api.deepseek.com"; apiKey = "{env:DEEPSEEK_API_KEY}"; };
+        mistral = { apiKey = "{env:MISTRAL_API_KEY}"; };
         openrouter = { baseUrl = "https://openrouter.ai/api/v1"; apiKey = "{env:OPENROUTER_API_KEY}"; };
-        zai       = { apiKey = "{env:ZAI_API_KEY}"; };
+        zai = { apiKey = "{env:ZAI_API_KEY}"; };
       };
 
       plugin = [
@@ -40,8 +40,8 @@ let
       mcp = {
         context7 = { type = "remote"; url = "https://api.context7.com/mcp"; apiKey = "{env:CONTEXT7_API_KEY}"; };
         gitnexus = { type = "local"; command = ["gitnexus" "mcp"]; enabled = false; };
-        nuget    = { type = "local"; command = ["dotnet" "tool" "run" "NuGet.Mcp.Server"]; enabled = false; };
-        roslyn   = { type = "local"; command = ["dotnet" "tool" "run" "RoslynMcp.Server"]; enabled = false; };
+        nuget = { type = "local"; command = ["dotnet" "tool" "run" "NuGet.Mcp.Server"]; enabled = false; };
+        roslyn = { type = "local"; command = ["dotnet" "tool" "run" "RoslynMcp.Server"]; enabled = false; };
       };
 
       skills = { autoLoad = true; };
@@ -53,7 +53,7 @@ in
   packages = [
     pkgs.opencode
     pkgs.nodejs
-    pkgs.bun
+    pkgs.bun          # needed for btca (micode plugin)
   ];
 
   env = {
@@ -64,12 +64,10 @@ in
   shellHook = ''
     mkdir -p "$OPENCODE_CONFIG_DIR" "$OPENCODE_CONFIG_DIR/skills"
 
-    # Install btca locally (project-isolated) to silence micode warning
-    if [ ! -f "$OPENCODE_CACHE_DIR/btca/bin/btca" ]; then
-      echo "→ Installing btca locally for micode plugin (one-time)..."
-      mkdir -p "$OPENCODE_CACHE_DIR/btca"
-      cd "$OPENCODE_CACHE_DIR/btca"
-      bun add -g btca --prefix "$OPENCODE_CACHE_DIR/btca" 2>/dev/null || true
+    # Install btca globally via bun to silence micode warning
+    if ! command -v btca >/dev/null 2>&1; then
+      echo "→ Installing btca for micode plugin (one-time)..."
+      bun add -g btca
     fi
 
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
