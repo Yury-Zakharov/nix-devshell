@@ -63,6 +63,14 @@ in
   shellHook = ''
     mkdir -p "$OPENCODE_CONFIG_DIR" "$OPENCODE_CONFIG_DIR/skills"
 
+    # Install btca locally (project-isolated) to silence micode warning
+    if [ ! -f "$OPENCODE_CACHE_DIR/btca/bin/btca" ]; then
+      echo "→ Installing btca locally for micode plugin (one-time)..."
+      mkdir -p "$OPENCODE_CACHE_DIR/btca"
+      cd "$OPENCODE_CACHE_DIR/btca"
+      bun add -g btca --prefix "$OPENCODE_CACHE_DIR/btca" 2>/dev/null || true
+    fi
+
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cp ${opencodeConfig} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
       echo "✅ Created clean opencode.jsonc with proper local llama.cpp definition"
