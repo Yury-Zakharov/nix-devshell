@@ -1,64 +1,10 @@
 { pkgs }:
 
-let
-  rawConfig = {
-    "$schema" = "https://opencode.ai/config.json";
-
-    # Default model — must match a key in the "provider" section below
-    model = "local-llama/qwen3-30b-a3b-q5_k_m";
-
-    provider = {
-      # Local llama.cpp server
-      "local-llama" = {
-        npm = "@ai-sdk/openai-compatible";
-        options = {
-          baseURL = "http://127.0.0.1:8080/v1";
-        };
-        models = {
-          "qwen3-30b-a3b-q5_k_m" = {
-            name = "Qwen3 30B (local)";
-          };
-        };
-      };
-
-      google = { apiKey = "{env:GEMINI_API_KEY}"; };
-      groq = { baseUrl = "https://api.groq.com/openai/v1"; apiKey = "{env:GROQ_API_KEY}"; };
-      cerebras = { baseUrl = "https://api.cerebras.ai/v1"; apiKey = "{env:CEREBRAS_API_KEY}"; };
-      deepseek = { baseUrl = "https://api.deepseek.com"; apiKey = "{env:DEEPSEEK_API_KEY}"; };
-      mistral = { apiKey = "{env:MISTRAL_API_KEY}"; };
-      openrouter = { baseUrl = "https://openrouter.ai/api/v1"; apiKey = "{env:OPENROUTER_API_KEY}"; };
-      zai = { apiKey = "{env:ZAI_API_KEY}"; };
-    };
-
-    plugin = [
-      "micode"
-      "oh-my-openagent"
-    ];
-
-    mcp = {
-      context7 = { type = "remote"; url = "https://api.context7.com/mcp"; apiKey = "{env:CONTEXT7_API_KEY}"; };
-      gitnexus = { type = "local"; command = ["gitnexus" "mcp"]; enabled = false; };
-      nuget = { type = "local"; command = ["dotnet" "tool" "run" "NuGet.Mcp.Server"]; enabled = false; };
-      roslyn = { type = "local"; command = ["dotnet" "tool" "run" "RoslynMcp.Server"]; enabled = false; };
-    };
-
-    skills = { autoLoad = true; };
-  };
-
-  # Pretty-print the JSON for human readability
-  opencodeConfig = pkgs.runCommand "opencode.jsonc" {} ''
-    ${pkgs.jq}/bin/jq . > $out << 'EOF'
-${builtins.toJSON rawConfig}
-EOF
-  '';
-in
-
 {
   packages = [
     pkgs.opencode
     pkgs.nodejs
-    pkgs.bun          # needed for btca (micode plugin)
-    pkgs.jq           # for pretty-printing
+    pkgs.bun
   ];
 
   env = {
@@ -78,10 +24,11 @@ in
     fi
     export PATH="$BUN_INSTALL/bin:$PATH"
 
+    # Copy default config if it doesn't exist yet (single declaration site)
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
-      cp ${opencodeConfig} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
+      cp ${./opencode/default.jsonc} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
       chmod u+w "$OPENCODE_CONFIG_DIR/opencode.jsonc"
-      echo "✅ Created clean, pretty-printed, writable opencode.jsonc"
+      echo "✅ Copied default opencode.jsonc from modules/opencode/default.jsonc"
     fi
 
     opencode plugin install --yes 2>/dev/null || true
