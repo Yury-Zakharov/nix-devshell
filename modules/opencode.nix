@@ -53,6 +53,7 @@ in
   packages = [
     pkgs.opencode
     pkgs.nodejs
+    pkgs.bun
   ];
 
   env = {
