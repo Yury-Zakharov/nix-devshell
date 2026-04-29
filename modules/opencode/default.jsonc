@@ -7,35 +7,188 @@
     "local-llama": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "baseURL": "http://127.0.0.1:8080/v1"
+        "baseURL": "http://127.0.0.1:8080/v1",
       },
       "models": {
         "qwen3-30b-a3b-q5_k_m": {
-          "name": "Qwen3 30B (local)"
-        }
-      }
+          "name": "Qwen3 30B (local)",
+          // Fully free, private, zero cost. Your current daily driver for sensitive work.
+        },
+      },
     },
 
-    "google":    { "apiKey": "{env:GEMINI_API_KEY}" },
-    "groq":      { "baseUrl": "https://api.groq.com/openai/v1",      "apiKey": "{env:GROQ_API_KEY}" },
-    "cerebras":  { "baseUrl": "https://api.cerebras.ai/v1",         "apiKey": "{env:CEREBRAS_API_KEY}" },
-    "deepseek":  { "baseUrl": "https://api.deepseek.com",           "apiKey": "{env:DEEPSEEK_API_KEY}" },
-    "mistral":   { "apiKey": "{env:MISTRAL_API_KEY}" },
-    "openrouter": { "baseUrl": "https://openrouter.ai/api/v1",      "apiKey": "{env:OPENROUTER_API_KEY}" },
-    "zai":       { "apiKey": "{env:ZAI_API_KEY}" }
+    "google": {
+      "apiKey": "{env:GEMINI_API_KEY}",
+      "models": {
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro (free)",
+          // Strongest free Google model for complex architecture & agentic coding; limited RPM.
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (free)",
+          // Fast, generous free tier, excellent balance of speed + coding quality.
+        },
+        "gemini-2.5-flash-lite": {
+          "name": "Gemini 2.5 Flash Lite (free)",
+          // Ultra-fast, highest free quota, perfect for quick iterations / testing.
+        },
+      },
+    },
+
+    "groq": {
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "apiKey": "{env:GROQ_API_KEY}",
+      "models": {
+        "llama-3.3-70b-versatile": {
+          "name": "Llama 3.3 70B Versatile (free)",
+          // Groq's flagship free model – excellent coding/reasoning, very fast inference.
+        },
+        "gpt-oss-120b": {
+          "name": "GPT-OSS 120B (free)",
+          // Strong open-source-scale reasoning; good free rate limits on Groq.
+        },
+        "qwen/qwen3-32b": {
+          "name": "Qwen3 32B (free)",
+          // Strong coding performer, generous free tier on Groq hardware.
+        },
+        "llama-3.1-8b-instant": {
+          "name": "Llama 3.1 8B Instant (free)",
+          // Blazing-fast free tier workhorse for quick tasks and high-volume use.
+        },
+      },
+    },
+
+    "cerebras": {
+      "baseUrl": "https://api.cerebras.ai/v1",
+      "apiKey": "{env:CEREBRAS_API_KEY}",
+      "models": {
+        "gpt-oss-120b": {
+          "name": "GPT-OSS 120B (free)",
+          // Top-tier free model on Cerebras; massive context, excellent coding speed.
+        },
+        "zai-glm-4.7": {
+          "name": "GLM-4.7 (Cerebras free)",
+          // Extremely strong coding model; free tier available (high demand, watch limits).
+        },
+        "llama3.1-8b": {
+          "name": "Llama 3.1 8B (free)",
+          // Fast, reliable free fallback on Cerebras hardware.
+        },
+      },
+    },
+
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com",
+      "apiKey": "{env:DEEPSEEK_API_KEY}",
+      "models": {
+        "deepseek-v4-pro": {
+          "name": "DeepSeek V4 Pro (free tokens)",
+          // Highest coding performance; uses your new-user free tokens (then cheap).
+        },
+        "deepseek-v4-flash": {
+          "name": "DeepSeek V4 Flash (free tier)",
+          // Fast, cost-effective free-tier model with strong agentic coding.
+        },
+      },
+    },
+
+    "mistral": {
+      "apiKey": "{env:MISTRAL_API_KEY}",
+      "models": {
+        "mistral-large-latest": {
+          "name": "Mistral Large (free tier)",
+          // Top Mistral model in free experiment tier – great reasoning/coding.
+        },
+        "devstral-2512": {
+          "name": "Devstral 2 (free tier)",
+          // Mistral's specialized coding/agentic model, excellent for dev tasks.
+        },
+        "codestral-latest": {
+          "name": "Codestral (free tier)",
+          // Dedicated coding model, generous free rate limits.
+        },
+      },
+    },
+
+    "openrouter": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "apiKey": "{env:OPENROUTER_API_KEY}",
+      "models": {
+        "qwen/qwen3-coder:free": {
+          "name": "Qwen3 Coder 480B (free)",
+          // Current strongest free coding model on OpenRouter; huge context.
+        },
+        "deepseek/deepseek-r1:free": {
+          "name": "DeepSeek R1 (free)",
+          // Excellent reasoning & coding, fully free tier.
+        },
+        "meta-llama/llama-3.3-70b-instruct:free": {
+          "name": "Llama 3.3 70B (free)",
+          // Reliable free workhorse with good coding performance.
+        },
+        "poolside/laguna-m1:free": {
+          "name": "Poolside Laguna M.1 (free)",
+          // Specialized coding agent model, free tier available.
+        },
+      },
+    },
+
+    "zai": {
+      "baseUrl": "https://api.z.ai/api/coding/paas/v4",
+      "apiKey": "{env:ZAI_API_KEY}",
+      "models": {
+        "glm-5.1": {
+          "name": "GLM-5.1 (paid)",
+          // Latest flagship in your GLM Coding Lite-Quarterly plan; top-tier reasoning & coding.
+        },
+        "glm-5-turbo": {
+          "name": "GLM-5 Turbo (paid)",
+          // Fast, high-throughput GLM-5 variant; ideal for quick iterations within quota.
+        },
+        "glm-4.7": {
+          "name": "GLM-4.7 (paid)",
+          // Your original subscription anchor – still excellent for agentic work.
+        },
+        "glm-4.6": {
+          "name": "GLM-4.6 (paid)",
+          // Solid paid fallback.
+        },
+        "glm-4.5": {
+          "name": "GLM-4.5 (paid)",
+          // Older but reliable within plan.
+        },
+        "glm-4.5-air": {
+          "name": "GLM-4.5 Air (paid)",
+          // Fastest low-latency option in your quarterly plan.
+        },
+      },
+    },
   },
 
-  "plugin": [
-    "micode",
-    "oh-my-openagent"
-  ],
+  "plugin": ["micode", "oh-my-openagent"],
 
   "mcp": {
-    "context7": { "type": "remote", "url": "https://api.context7.com/mcp", "apiKey": "{env:CONTEXT7_API_KEY}" },
-    "gitnexus": { "type": "local", "command": ["gitnexus", "mcp"], "enabled": false },
-    "nuget":    { "type": "local", "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"], "enabled": false },
-    "roslyn":   { "type": "local", "command": ["dotnet", "tool", "run", "RoslynMcp.Server"], "enabled": false }
+    "context7": {
+      "type": "remote",
+      "url": "https://api.context7.com/mcp",
+      "apiKey": "{env:CONTEXT7_API_KEY}",
+    },
+    "gitnexus": {
+      "type": "local",
+      "command": ["gitnexus", "mcp"],
+      "enabled": false,
+    },
+    "nuget": {
+      "type": "local",
+      "command": ["dotnet", "tool", "run", "NuGet.Mcp.Server"],
+      "enabled": false,
+    },
+    "roslyn": {
+      "type": "local",
+      "command": ["dotnet", "tool", "run", "RoslynMcp.Server"],
+      "enabled": false,
+    },
   },
 
-  "skills": { "autoLoad": true }
+  "skills": { "autoLoad": true },
 }

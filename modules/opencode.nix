@@ -31,6 +31,19 @@
       echo "✅ Copied default opencode.jsonc from modules/opencode/default.jsonc"
     fi
 
+    # plugin configs – copied only on first run (zero implicit, single declaration site)
+    if [ ! -f "$OPENCODE_CONFIG_DIR/oh-my-openagent.jsonc" ]; then
+    cp ${./opencode/default-oh-my-openagent.jsonc} "$OPENCODE_CONFIG_DIR/oh-my-openagent.jsonc"
+    chmod u+w "$OPENCODE_CONFIG_DIR/oh-my-openagent.jsonc"
+    echo "Copied default oh-my-openagent.jsonc"
+    fi
+
+    if [ ! -f "$OPENCODE_CONFIG_DIR/micode.json" ]; then
+    cp ${./opencode/default-micode.json} "$OPENCODE_CONFIG_DIR/micode.json"
+    chmod u+w "$OPENCODE_CONFIG_DIR/micode.json"
+    echo "Copied default micode.json"
+    fi
+
     opencode plugin install --yes 2>/dev/null || true
     echo "OpenCode ready"
   '';

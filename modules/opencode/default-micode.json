@@ -1,0 +1,16 @@
+{
+  "agents": {
+    "brainstormer": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "groq/llama-3.3-70b-versatile",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1"
+      ]
+      // Architect role
+    }
+  }
+}
+

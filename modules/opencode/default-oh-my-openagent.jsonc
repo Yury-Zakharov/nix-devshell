@@ -1,0 +1,71 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "prometheus": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "groq/llama-3.3-70b-versatile",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1"
+      ]
+      // Architect role – planning / architecture
+    },
+    "oracle": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "groq/llama-3.3-70b-versatile",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1"
+      ]
+      // Architect role – architecture review
+    },
+    "librarian": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "groq/llama-3.1-8b-instant",
+        "openrouter/deepseek/deepseek-r1:free",
+        "zai/glm-4.5-air"
+      ]
+      // Architect role – research / information
+    },
+    "sisyphus": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo"
+      ]
+      // Coder role – main orchestrator / implementation
+    },
+    "hephaestus": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo"
+      ]
+      // Coder role – deep implementation
+    },
+    "momus": {
+      "model": "google/gemini-2.5-flash-lite",
+      "temperature": 0.1,
+      "fallback_models": [
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "groq/llama-3.1-8b-instant",
+        "mistral/devstral-2512",
+        "zai/glm-4.5-air"
+      ]
+      // Tester role – critical review / testing
+    }
+  }
+}
