@@ -35,17 +35,21 @@
 ## GitHub Workflow & Collaboration (mandatory CI/CD)
 - Main branch (`main` or `master`) is the single source of truth. It must always build, pass tests, and be deployable.
 - Never commit or push directly to main.
+- Branch protection rules on `main` (enforced in GitHub settings):
+  - Require at least 1 review approval.
+  - Require status checks to pass (CI must succeed).
+  - Do not allow force-push or direct commits.
 - Every specification and every implementation phase follows the same strict flow:
   1. Always start from the latest main.
   2. Create a short-lived feature branch named `feature/phase-XXX-short-name` (XXX = phase number from spec-kit).
   3. Complete all work on that branch only.
-  4. When phase is complete, agents use GitHub MCP tools to automatically create PRs, request reviews, and merge after approval.
+  4. Agents use GitHub MCP tools to automatically create a PR with correct title format, spec/plan reference, and checklist.
   5. Request review (human or designated agent).
   6. Fix review comments in the same branch (loop until approved).
-  7. Merge PR to main (squash or merge commit).
+  7. Merge PR to main (squash merge only).
   8. Delete the feature branch locally and remotely.
-- Parallel phases (marked by spec-kit) must each get their own independent feature branch. Orchestrator agent assigns them to separate agents.
-- All PRs must reference the corresponding spec/plan ID in title and description.
-- Branch protection rules (if any) on main are respected; no force-push.
+- Parallel phases must each get their own independent feature branch. Orchestrator agent assigns them to separate agents.
+- All PRs must use the project PR template and reference the corresponding spec/plan ID.
+- Conventional commits are mandatory for all commit messages.
 
 This constitution is immutable for the lifetime of the project.

@@ -9,7 +9,7 @@
 
     echo "Spec-kit: $(specify version 2>/dev/null || echo "not found")"
 
-    # Pre-configure spec-kit – force our custom constitution (handles permission issues)
+    # Pre-configure spec-kit – copy our constitution, overwriting placeholder
     if [ -n "''${SPEC_KIT_HOME:-}" ] && [ -d ".specify" ]; then
       mkdir -p .specify/memory
       chmod -R u+w .specify/memory 2>/dev/null || true
@@ -17,8 +17,23 @@
         rm -f .specify/memory/constitution.md
         cp ${./spec-kit/defaults/constitution.md} .specify/memory/constitution.md
         chmod u+w .specify/memory/constitution.md
-        echo "✓ spec-kit pre-configured with custom tech-agnostic constitution"
+        echo "✓ spec-kit pre-configured with custom constitution"
       fi
+    fi
+
+    # Pre-configure GitHub workflow files (copied only on first run)
+    if [ ! -d ".github/workflows" ]; then
+      mkdir -p .github/workflows
+      cp ${./spec-kit/defaults/.github/workflows/ci.yml} .github/workflows/ci.yml
+      chmod u+w .github/workflows/ci.yml
+      echo "✓ GitHub CI workflow copied"
+    fi
+
+    if [ ! -f ".github/pull_request_template.md" ]; then
+      mkdir -p .github
+      cp ${./spec-kit/defaults/.github/pull_request_template.md} .github/pull_request_template.md
+      chmod u+w .github/pull_request_template.md
+      echo "✓ GitHub PR template copied"
     fi
   '';
 }
