@@ -16,12 +16,16 @@
 - Violation of separation blocks merge.
 
 ## Development Rules
-- Functional-first approach is mandatory:
+- Strict functional-first approach is mandatory:
   - Prefer immutable data structures.
   - Use function composition and higher-order functions.
   - Eliminate nulls; use Option<T> (or equivalent) instead.
   - Use Either<Error, T> (or equivalent) instead of exceptions.
-  - This rule applies even in languages like C#.
+- Additional functional & type-safe design principles:
+  - No implicit state: all state must be explicit and passed as parameters.
+  - Prefer stateless designs wherever possible.
+  - Make invalid states irrepresentable in the type system.
+  - Prefer pure total functions that are deterministic and always produce a valid output for every input.
 - Strict TDD:
   - Tests written for a phase/task are readonly for all future phases.
   - Later implementation must not modify or delete existing tests.
@@ -35,12 +39,11 @@
   1. Always start from the latest main.
   2. Create a short-lived feature branch named `feature/phase-XXX-short-name` (XXX = phase number from spec-kit).
   3. Complete all work on that branch only.
-  4. When phase is complete, output ready-to-use PR instructions (title, body referencing spec/plan, checklist).
-  5. Human (or designated agent) creates the Pull Request to main.
-  6. Request review (human or specific @agent).
-  7. Fix review comments in the same branch (loop until approved).
-  8. Merge PR to main (squash or merge commit).
-  9. Delete the feature branch locally and remotely.
+  4. When phase is complete, agents use GitHub MCP tools to automatically create PRs, request reviews, and merge after approval.
+  5. Request review (human or designated agent).
+  6. Fix review comments in the same branch (loop until approved).
+  7. Merge PR to main (squash or merge commit).
+  8. Delete the feature branch locally and remotely.
 - Parallel phases (marked by spec-kit) must each get their own independent feature branch. Orchestrator agent assigns them to separate agents.
 - All PRs must reference the corresponding spec/plan ID in title and description.
 - Branch protection rules (if any) on main are respected; no force-push.
