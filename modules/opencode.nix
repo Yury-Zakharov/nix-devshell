@@ -45,14 +45,15 @@
     fi
 
     # spec-kit official OpenCode integration – automatic one-time init
-    # runs only if spec-kit module is also loaded (detected via SPEC_KIT_HOME)
-    if [ -n "${SPEC_KIT_HOME:-}" ] && [ ! -d ".specify" ]; then
+    # runs only when spec-kit module is also loaded + .specify/ missing
+    if command -v specify >/dev/null 2>&1 && [ ! -d ".specify" ]; then
     echo "→ Detected spec-kit module. Auto-initializing OpenCode integration..."
-    if specify init . --integration opencode; then
+    if specify init . --integration opencode --force --script sh; then
         echo "✓ spec-kit initialized with OpenCode integration (.specify/ created)"
-    else
-        echo "⚠ spec-kit init failed"
-    fi
+        echo "   /speckit.* commands should now be available in OpenCode TUI"
+      else
+        echo "⚠ spec-kit init failed – run manually: specify init . --integration opencode"
+      fi
     fi
     opencode plugin install --yes 2>/dev/null || true
     echo "OpenCode ready"
