@@ -44,6 +44,16 @@
     echo "Copied default micode.json"
     fi
 
+    # spec-kit official OpenCode integration – automatic one-time init
+    # runs only if spec-kit module is also loaded (detected via SPEC_KIT_HOME)
+    if [ -n "${SPEC_KIT_HOME:-}" ] && [ ! -d ".specify" ]; then
+    echo "→ Detected spec-kit module. Auto-initializing OpenCode integration..."
+    if specify init . --integration opencode; then
+        echo "✓ spec-kit initialized with OpenCode integration (.specify/ created)"
+    else
+        echo "⚠ spec-kit init failed"
+    fi
+    fi
     opencode plugin install --yes 2>/dev/null || true
     echo "OpenCode ready"
   '';
