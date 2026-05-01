@@ -9,6 +9,15 @@
 
     echo "Spec-kit: $(specify version 2>/dev/null || echo "not found")"
 
+    # Copy best practices document
+    if [ ! -f "./best-practices.md" ]; then
+      mkdir -p .github
+      cp ${./spec-kit/best-practices.md} ./best-practices.md
+      chmod u+w ./best-practices.md
+      echo "✓ best-practices.md copied"
+    fi
+
+
     # Pre-configure spec-kit – copy our constitution, overwriting placeholder
     if [ -n "''${SPEC_KIT_HOME:-}" ] && [ -d ".specify" ]; then
       mkdir -p .specify/memory
