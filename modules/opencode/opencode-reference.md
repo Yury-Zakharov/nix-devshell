@@ -130,6 +130,74 @@ Each role has its own free-first fallback chain ending with GLM subscription →
 
 Once enabled, GitHub will automatically enforce the CI/CD rules defined in the project constitution.
 
+
+# Git Worktree Usage Guide – Human vs Agent Responsibilities & Walk-through
+
+**Module:** `git-worktree.nix` (optional)  
+**Purpose:** Enable true parallel development with spec-kit phases without branch-switching conflicts.
+
+## 4. Human vs Agent Responsibilities (unambiguous)
+
+| Action                              | Who does it          | How / Command                                      | Notes |
+|-------------------------------------|----------------------|----------------------------------------------------|-------|
+| Run spec-kit commands (`/speckit.*`) | **Agent**            | `@sisyphus /speckit.tasks` etc.                   | Agent executes inside current worktree |
+| Create new worktree for a phase     | **You (human)**      | `wt-phase 005` or `wt-create feature/phase-005-…` | Manual one-time action |
+| Switch between worktrees            | **You (human)**      | `cd ../project-feature-phase-005-…`                | Manual |
+| Run implementation in a worktree    | **Agent**            | `@hephaestus /speckit.implement` (inside worktree) | Agent works in its own isolated directory |
+| Create PR / review / merge          | **Agent**            | GitHub MCP tools (automatic after implement)       | Agent uses MCP |
+| Decide which phases run in parallel | **You (human)**      | Run `wt-phase X` for each phase you want parallel  | You control parallelism |
+| Delete worktree after merge         | **You (human)**      | `git worktree remove <path>` or `wt-prune`        | Cleanup |
+
+**Core rule:**  
+You own the workspace layout (creating and switching worktrees).  
+The agent owns all coding, spec-kit commands, and GitHub MCP actions **inside** the worktree you open.
+
+## 5. Concrete Walk-through (made-up case)
+
+**Feature:** “Add dark mode toggle to the photo album app”
+
+1. **You (in main directory)**  
+   `@prometheus /speckit.specify Add dark mode toggle with system preference detection`
+
+2. **You**  
+   `@prometheus /speckit.plan`  
+   `@sisyphus /speckit.tasks`  
+   (spec-kit now shows 3 phases: 005-ui-toggle, 006-theme-engine, 007-persistence)
+
+3. **You decide parallelism** (manual)  
+```bash
+wt-phase 005
+cd ../photoalbum-feature-phase-005-ui-toggle
+```
+
+4. **Agent** (inside the new worktree)  
+```bash
+@hephaestus /speckit.implement
+```
+
+5. **You** (back in main directory)  
+```bash
+cd ../photoalbum                  # return to main working directory
+wt-phase 006
+cd ../photoalbum-feature-phase-006-theme-engine
+@hephaestus /speckit.implement
+```
+
+**Repeat** steps 4–5 for every parallel phase (007, etc.).
+
+6. **Agent** (in each worktree)  
+   After implementation finishes, the agent automatically creates the PR via GitHub MCP.
+
+7. **You** (cleanup after PR merge)  
+```bash
+cd ../photoalbum   # back to main
+git worktree remove ../photoalbum-feature-phase-005-ui-toggle
+```
+
+This keeps your DAO intact: **you** control the workspace, **agents** control the coding and GitHub actions.
+
+Copy this document into your nix-devshell repo or project documentation.
+
 This document lives in the nix-devshell repository and is copied into every project that uses the `opencode` module.
 
 You now have a clean, controllable, spec-first development environment that follows your principles to the letter.
