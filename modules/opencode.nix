@@ -25,6 +25,13 @@
     export PATH="$BUN_INSTALL/bin:$PATH"
 
     # Copy default config if it doesn't exist yet (single declaration site)
+    if [ ! -f "$OPENCODE_CONFIG_DIR/opencode-reference.md" ]; then
+      cp ${./opencode/opencode-reference.md} "$OPENCODE_CONFIG_DIR/opencode-reference.md"
+      chmod u+w "$OPENCODE_CONFIG_DIR/opencode-reference.md"
+      echo "✓ Copied opencode-reference.md from modules/opencode/opencode-reference.md"
+    fi
+
+    # Copy default config if it doesn't exist yet (single declaration site)
     if [ ! -f "$OPENCODE_CONFIG_DIR/opencode.jsonc" ]; then
       cp ${./opencode/default.jsonc} "$OPENCODE_CONFIG_DIR/opencode.jsonc"
       chmod u+w "$OPENCODE_CONFIG_DIR/opencode.jsonc"
