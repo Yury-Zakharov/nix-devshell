@@ -1,21 +1,139 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [429, 503, 529, 1308, 1310],
+    "max_fallback_attempts": 3, // was much higher → now only 3 attempts
+    "cooldown_seconds": 15, // was ~60s → now 15s between retries
+    "timeout_seconds": 30,
+    "notify_on_fallback": true,
+  },
   "agents": {
     // Architect role (0.1 temp)
-    "prometheus": { "model": "google/gemini-2.5-pro", "temperature": 0.1, "fallback_models": ["groq/llama-3.3-70b-versatile", "google/gemini-2.5-pro", "openrouter/qwen/qwen3-coder:free", "zai/glm-5.1", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "oracle": { "model": "google/gemini-2.5-pro", "temperature": 0.1, "fallback_models": ["groq/llama-3.3-70b-versatile", "google/gemini-2.5-pro", "openrouter/qwen/qwen3-coder:free", "zai/glm-5.1", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "librarian": { "model": "google/gemini-2.5-flash", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash", "openrouter/deepseek/deepseek-r1:free", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "explore": { "model": "google/gemini-2.5-flash", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash", "openrouter/deepseek/deepseek-r1:free", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "multimodal-looker": { "model": "google/gemini-2.5-flash", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash", "openrouter/deepseek/deepseek-r1:free", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] },
+    "prometheus": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.3-70b-versatile",
+        "google/gemini-2.5-pro",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "oracle": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.3-70b-versatile",
+        "google/gemini-2.5-pro",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "librarian": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash",
+        "openrouter/deepseek/deepseek-r1:free",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "explore": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash",
+        "openrouter/deepseek/deepseek-r1:free",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-2.5-flash",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash",
+        "openrouter/deepseek/deepseek-r1:free",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
 
     // Coder role (0.25 temp)
-    "sisyphus": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "hephaestus": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "sisyphus-junior": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
+    "sisyphus": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "hephaestus": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "sisyphus-junior": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
 
     // Tester role (0.1 temp)
-    "momus": { "model": "google/gemini-2.5-flash-lite", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash-lite", "mistral/devstral-2512", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "metis": { "model": "google/gemini-2.5-flash-lite", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash-lite", "mistral/devstral-2512", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "atlas": { "model": "google/gemini-2.5-flash-lite", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash-lite", "mistral/devstral-2512", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] }
-  }
+    "momus": {
+      "model": "google/gemini-2.5-flash-lite",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash-lite",
+        "mistral/devstral-2512",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "metis": {
+      "model": "google/gemini-2.5-flash-lite",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash-lite",
+        "mistral/devstral-2512",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+    "atlas": {
+      "model": "google/gemini-2.5-flash-lite",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash-lite",
+        "mistral/devstral-2512",
+        "zai/glm-4.5-air",
+        "local-llama/qwen3-30b-a3b-q5_k_m",
+      ],
+    },
+  },
 }
