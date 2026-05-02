@@ -1,5 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "compaction": {
+    "enabled": true,
+    "model": "google/gemini-2.5-pro",
+    "temperature": 0.0,
+    "max_tokens": 8000,
+  },
   "runtime_fallback": {
     "enabled": true,
     "retry_on_errors": [429, 503, 529, 1308, 1310],
@@ -15,7 +21,6 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.3-70b-versatile",
-        "google/gemini-2.5-pro",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
         "local-llama/qwen3-30b-a3b-q5_k_m",
