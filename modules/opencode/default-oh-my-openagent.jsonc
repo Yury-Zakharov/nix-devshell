@@ -15,11 +15,12 @@
     "notify_on_fallback": true,
   },
   "agents": {
-    // Architect role (0.1 temp)
+    // Architect role (0.1 temp) – using more generous free-tier model as primary
     "prometheus": {
-      "model": "google/gemini-2.5-pro",
+      "model": "google/gemini-2.5-flash",
       "temperature": 0.1,
       "fallback_models": [
+        "google/gemini-2.5-pro",
         "groq/llama-3.3-70b-versatile",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
@@ -27,11 +28,11 @@
       ],
     },
     "oracle": {
-      "model": "google/gemini-2.5-pro",
+      "model": "google/gemini-2.5-flash",
       "temperature": 0.1,
       "fallback_models": [
-        "groq/llama-3.3-70b-versatile",
         "google/gemini-2.5-pro",
+        "groq/llama-3.3-70b-versatile",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
         "local-llama/qwen3-30b-a3b-q5_k_m",
