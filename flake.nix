@@ -41,6 +41,7 @@
         bmad-method  = import ./modules/bmad-method.nix;
         gitnexus     = import ./modules/gitnexus.nix;
         gitnexus-mcp = import ./modules/gitnexus-mcp.nix;
+        jq           = import ./modules/jq.nix;
       };
 
       overlays = import ./overlays.nix;
