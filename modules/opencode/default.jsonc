@@ -18,7 +18,9 @@
     },
 
     "google": {
-      "apiKey": "{env:GOOGLE_GENERATIVE_AI_API_KEY}",
+      "options": {
+        "apiKey": "{env:GOOGLE_GENERATIVE_AI_API_KEY}",
+      },
       "models": {
         "gemini-2.5-pro": {
           "name": "Gemini 2.5 Pro (free)",
@@ -36,8 +38,10 @@
     },
 
     "groq": {
-      "baseUrl": "https://api.groq.com/openai/v1",
-      "apiKey": "{env:GROQ_API_KEY}",
+      "options": {
+        "baseUrl": "https://api.groq.com/openai/v1",
+        "apiKey": "{env:GROQ_API_KEY}",
+      },
       "models": {
         "llama-3.3-70b-versatile": {
           "name": "Llama 3.3 70B Versatile (free)",
@@ -59,8 +63,10 @@
     },
 
     "cerebras": {
-      "baseUrl": "https://api.cerebras.ai/v1",
-      "apiKey": "{env:CEREBRAS_API_KEY}",
+      "options": {
+        "baseUrl": "https://api.cerebras.ai/v1",
+        "apiKey": "{env:CEREBRAS_API_KEY}",
+      },
       "models": {
         "gpt-oss-120b": {
           "name": "GPT-OSS 120B (free)",
@@ -78,8 +84,10 @@
     },
 
     "deepseek": {
-      "baseUrl": "https://api.deepseek.com",
-      "apiKey": "{env:DEEPSEEK_API_KEY}",
+      "options": {
+        "baseUrl": "https://api.deepseek.com",
+        "apiKey": "{env:DEEPSEEK_API_KEY}",
+      },
       "models": {
         "deepseek-v4-pro": {
           "name": "DeepSeek V4 Pro (free tokens)",
@@ -93,7 +101,9 @@
     },
 
     "mistral": {
-      "apiKey": "{env:MISTRAL_API_KEY}",
+      "options": {
+        "apiKey": "{env:MISTRAL_API_KEY}",
+      },
       "models": {
         "mistral-large-latest": {
           "name": "Mistral Large (free tier)",
@@ -111,8 +121,10 @@
     },
 
     "openrouter": {
-      "baseUrl": "https://openrouter.ai/api/v1",
-      "apiKey": "{env:OPENROUTER_API_KEY}",
+      "options": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "apiKey": "{env:OPENROUTER_API_KEY}",
+      },
       "models": {
         "qwen/qwen3-coder:free": {
           "name": "Qwen3 Coder 480B (free)",
@@ -134,8 +146,13 @@
     },
 
     "zai": {
-      "baseUrl": "https://api.z.ai/api/coding/paas/v4",
-      "apiKey": "{env:ZAI_API_KEY}",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://api.z.ai/api/coding/paas/v4",
+        "headers": {
+          "Authorization": "Bearer {env:ZAI_API_KEY}",
+        },
+      },
       "models": {
         "glm-5.1": {
           "name": "GLM-5.1 (paid)",
