@@ -15,7 +15,7 @@
     "notify_on_fallback": true,
   },
   "agents": {
-    // Architect role (0.1 temp) – using more generous free-tier model as primary
+    // Architect role (0.1 temp) – planning & specification
     "prometheus": {
       "model": "google/gemini-2.5-flash",
       "temperature": 0.1,
@@ -43,7 +43,6 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
@@ -54,7 +53,6 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
@@ -65,7 +63,6 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
@@ -74,35 +71,35 @@
 
     // Coder role (0.25 temp)
     "sisyphus": {
-      "model": "groq/gpt-oss-120b",
+      "model": "groq/llama-3.3-70b-versatile",
       "temperature": 0.25,
       "fallback_models": [
-        "groq/gpt-oss-120b",
+        "groq/qwen/qwen3-32b",
         "google/gemini-2.5-flash",
-        "deepseek/deepseek-v4-pro",
-        "zai/glm-5-turbo",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
     },
     "hephaestus": {
-      "model": "groq/gpt-oss-120b",
+      "model": "groq/llama-3.3-70b-versatile",
       "temperature": 0.25,
       "fallback_models": [
-        "groq/gpt-oss-120b",
+        "groq/qwen/qwen3-32b",
         "google/gemini-2.5-flash",
-        "deepseek/deepseek-v4-pro",
-        "zai/glm-5-turbo",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
     },
     "sisyphus-junior": {
-      "model": "groq/gpt-oss-120b",
+      "model": "groq/llama-3.3-70b-versatile",
       "temperature": 0.25,
       "fallback_models": [
-        "groq/gpt-oss-120b",
+        "groq/qwen/qwen3-32b",
         "google/gemini-2.5-flash",
-        "deepseek/deepseek-v4-pro",
-        "zai/glm-5-turbo",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
     },
@@ -113,8 +110,7 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash-lite",
-        "mistral/devstral-2512",
+        "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
@@ -124,8 +120,7 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash-lite",
-        "mistral/devstral-2512",
+        "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
@@ -135,8 +130,7 @@
       "temperature": 0.1,
       "fallback_models": [
         "groq/llama-3.1-8b-instant",
-        "google/gemini-2.5-flash-lite",
-        "mistral/devstral-2512",
+        "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
         "local-llama/qwen3-30b-a3b-q5_k_m",
       ],
