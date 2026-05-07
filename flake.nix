@@ -57,5 +57,21 @@
             extraModules = evaluatedModules;
           };
       };
+      # init CLI
+      packages.${system}.init = let
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      in pkgs.writeShellApplication {
+        name = "devshell-init";
+        runtimeInputs = [ pkgs.gum pkgs.jq pkgs.git ];
+        text = builtins.readFile ./scripts/init.sh;
+      };
+
+      apps.${system}.init = {
+        type = "app";
+        program = "${packages.${system}.init}/bin/devshell-init";
+      };
     };
 }
