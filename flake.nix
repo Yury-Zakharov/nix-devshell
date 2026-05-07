@@ -57,6 +57,7 @@
             extraModules = evaluatedModules;
           };
       };
+
       # init CLI
       packages.${system}.init = let
         pkgs = import nixpkgs {
@@ -71,7 +72,7 @@
 
       apps.${system}.init = {
         type = "app";
-        program = "${packages.${system}.init}/bin/devshell-init";
+        program = "${self.packages.${system}.init}/bin/devshell-init";
       };
     };
 }
