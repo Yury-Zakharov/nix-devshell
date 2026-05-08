@@ -42,6 +42,7 @@
         gitnexus     = import ./modules/gitnexus.nix;
         gitnexus-mcp = import ./modules/gitnexus-mcp.nix;
         jq           = import ./modules/jq.nix;
+        haskell      = import ./modules/haskell.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -71,16 +72,19 @@
         gitnexus      = "GitNexus: knowledge base";
         gitnexus-mcp  = "GitNexus MCP server";
         jq            = "jq + jq tools for JSON processing";
+        haskell       = "Haskell + Stack";
       };
 
       # Single declaration site for presets (used by #init CLI)
       presets = {
         minimal   = [ ];
         dotnet-ai = [ "dotnet" "opencode" ];
+        dotnet-ui = [ "dotnet" "avalonia" ];
         python-ai = [ "python" "opencode" ];
         elm       = [ "elm" "elm-land" "elm-spa" "elm-opencode" ];
         ai-dev    = [ "opencode" "claude" "gemini" "kilocode-cli" ];
         heavy-sdd = [ "bmad-method" "dotnet" "opencode" ];
+        haskel-ai = [ "opencode" "haskell" ];
       };
 
       overlays = import ./overlays.nix;

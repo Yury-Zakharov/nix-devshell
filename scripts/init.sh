@@ -139,6 +139,13 @@ cat > .gitignore << 'EOF'
 __pycache__/
 node_modules/
 .DS_Store
+.stack/
+.cache/
+.config/
+.dotnet/
+.local/
+.nuget/
+.opencode/
 EOF
 
 git init -q
