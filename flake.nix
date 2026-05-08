@@ -43,6 +43,7 @@
         gitnexus-mcp = import ./modules/gitnexus-mcp.nix;
         jq           = import ./modules/jq.nix;
         haskell      = import ./modules/haskell.nix;
+        monomer      = import ./modules/monomer.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -73,6 +74,7 @@
         gitnexus-mcp  = "GitNexus MCP server";
         jq            = "jq + jq tools for JSON processing";
         haskell       = "Haskell + Stack";
+        monomer       = "Haskell GUI, use it with haskell module";
       };
 
       # Single declaration site for presets (used by #init CLI)
@@ -85,6 +87,7 @@
         ai-dev    = [ "opencode" "claude" "gemini" "kilocode-cli" ];
         heavy-sdd = [ "bmad-method" "dotnet" "opencode" ];
         haskel-ai = [ "opencode" "haskell" ];
+        haskel-ui = [ "monomer" "haskell" ];
       };
 
       overlays = import ./overlays.nix;
