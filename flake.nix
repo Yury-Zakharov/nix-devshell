@@ -73,6 +73,16 @@
         jq            = "jq + jq tools for JSON processing";
       };
 
+      # Single declaration site for presets (used by #init CLI)
+      presets = {
+        minimal   = [ ];
+        dotnet-ai = [ "dotnet" "opencode" ];
+        python-ai = [ "python" "opencode" ];
+        elm       = [ "elm" "elm-land" "elm-spa" "elm-opencode" ];
+        ai-dev    = [ "opencode" "claude" "gemini" "kilocode-cli" ];
+        heavy-sdd = [ "bmad-method" "dotnet" "opencode" ];
+      };
+
       overlays = import ./overlays.nix;
 
       lib = {
