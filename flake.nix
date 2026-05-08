@@ -44,6 +44,7 @@
         jq           = import ./modules/jq.nix;
         haskell      = import ./modules/haskell.nix;
         monomer      = import ./modules/monomer.nix;
+        hsqml        = import ./modules/hsqml.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -75,6 +76,7 @@
         jq            = "jq + jq tools for JSON processing";
         haskell       = "Haskell + Stack";
         monomer       = "Haskell GUI, use it with haskell module";
+        hsqml         = "Another Haskell GUI, qt way";
       };
 
       # Single declaration site for presets (used by #init CLI)
