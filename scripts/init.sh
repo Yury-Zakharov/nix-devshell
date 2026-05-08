@@ -15,31 +15,41 @@ fi
 nix flake new "$PROJECT_DIR" -t github:Yury-Zakharov/nix-devshell
 cd "$PROJECT_DIR"
 
-# Choose preset
+# Preset selection (Custom always first)
 mapfile -t PRESET_KEYS < <(nix eval --impure --json --expr 'builtins.attrNames ((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets)' | jq -r '.[]' | sort)
-PRESET=$(gum choose --header "Choose a preset" "${PRESET_KEYS[@]}")
+PRESET_KEYS=("Custom" "${PRESET_KEYS[@]}")
+PRESET=$(gum choose --header "Choose a preset or Custom" "${PRESET_KEYS[@]}")
 
-# Load preset modules
-mapfile -t PRESET_MODULES < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets."'"$PRESET"'")' | jq -r '.[]' 2>/dev/null || true)
+if [[ "$PRESET" == "Custom" ]]; then
+  PRESET_MODULES=()
+else
+  mapfile -t PRESET_MODULES < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets."'"$PRESET"'")' | jq -r '.[]' 2>/dev/null || true)
+fi
 
-# Module descriptions for selector
+# Descriptions for selector
 mapfile -t DESCS < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").moduleDescriptions)' | jq -r 'to_entries[] | "\(.key) - \(.value)"' | sort)
-
 mapfile -t OPTIONAL < <(printf '%s\n' "${DESCS[@]}" | grep -v '^base - ')
 
-# Pre-select preset modules in gum
-mapfile -t SELECTED_PRE < <(for m in "${PRESET_MODULES[@]}"; do
+# Pre-select using safe --selected= syntax (fixes gum space/hyphen parsing)
+SELECTED_ARGS=()
+for m in "${PRESET_MODULES[@]}"; do
   for d in "${DESCS[@]}"; do
-    if [[ "$d" == "$m - "* ]]; then echo "$d"; break; fi
+    if [[ "$d" == "$m - "* ]]; then
+      SELECTED_ARGS+=("--selected=$d")
+      break
+    fi
   done
-done)
+done
 
-SELECTED=$(gum choose --no-limit --ordered --selected "${SELECTED_PRE[@]}" --header "Additional modules (preset pre-selected)" "${OPTIONAL[@]}")
+if [[ ${#SELECTED_ARGS[@]} -gt 0 ]]; then
+  SELECTED=$(gum choose --no-limit --ordered "${SELECTED_ARGS[@]}" --header "Additional modules (preset pre-selected)" "${OPTIONAL[@]}")
+else
+  SELECTED=$(gum choose --no-limit --ordered --header "Select additional modules (base is always included)" "${OPTIONAL[@]}")
+fi
 
 # Build final list
 EXTRA_MODULES=(base)
 
-# Helper to avoid duplicates
 contains() {
   local e
   for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
@@ -54,7 +64,6 @@ if [[ -n "$SELECTED" ]]; then
   done
 fi
 
-# Ensure all preset modules are present
 for m in "${PRESET_MODULES[@]}"; do
   contains "$m" "${EXTRA_MODULES[@]}" || EXTRA_MODULES+=("$m")
 done
