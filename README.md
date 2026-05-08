@@ -4,17 +4,50 @@ Reusable Nix devshell modules and templates.
 
 **Goal**: Every development project gets a fully isolated, project-root-only environment.  
 No global state, no `~/` paths, no implicit behaviour.  
-Single declaration site for every module, overlay, and tool.
+Single declaration site for every module, overlay, preset, and tool.
 
 ## Create a new project
 
 ```bash
-nix flake new myproject -t github:Yury-Zakharov/nix-devshell
-cd myproject
-
-# Edit flake.nix → choose the modules you need
-direnv allow
+ndi                     # interactive (recommended)
+ndi my-project
+ndi --preset dotnet backend
+ndi --dry-run --preset python-ai "AI workspace"
+ndi --preset ai-dev --description "Agent swarm" swarm-agent
 ```
+
+Or without the alias:
+
+```bash
+nix run github:Yury-Zakharov/nix-devshell#init
+```
+
+The CLI:
+- Prompts for project directory + optional description
+- Lets you choose a preset **or** Custom
+- Shows module descriptions in the selector
+- Always includes `base`
+- Creates the project, initialises git, adds `.gitignore`
+- Edits `flake.nix` with the exact modules (single declaration site)
+
+**Shell alias** (add to your Home Manager config):
+
+```nix
+programs.zsh.initExtra = ''
+  ndi() {
+    nix run --refresh --no-eval-cache github:Yury-Zakharov/nix-devshell#init -- "$@"
+  }
+'';
+```
+
+## Available presets
+
+- `minimal` – base only
+- `dotnet` – dotnet + avalonia
+- `python-ai` – python + opencode + claude
+- `elm` – full Elm stack
+- `ai-dev` – all AI tools
+- `focus` – bmad-method + get-shit-done
 
 ## OpenCode Configuration (with free-first model rotation)
 
@@ -78,9 +111,9 @@ Role-based models are already set in `.opencode/opencode.jsonc`:
 nix flake update devshell && direnv allow
 ```
 
-## Add a new module / overlay
+## Add a new module / overlay / preset
 
-See `modules/` and `overlays/` — single declaration site in `flake.nix`.
+See `modules/`, `overlays/`, and the `moduleDescriptions` + `presets` attrs in `flake.nix` — single declaration site.
 
 ---
 
