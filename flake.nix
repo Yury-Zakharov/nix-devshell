@@ -44,6 +44,35 @@
         jq           = import ./modules/jq.nix;
       };
 
+      # Single declaration site for module metadata (used by #init CLI)
+      moduleDescriptions = {
+        base          = "Base development environment with common tools, XDG dirs, podman socket";
+        claude        = "Claude AI integration (opencode + claude tools)";
+        dotnet        = ".NET LTS SDK, dotnet CLI tools, C# language server";
+        avalonia      = "Avalonia UI framework for cross-platform .NET desktop apps";
+        elm           = "Elm language, compiler, and dev tools";
+        elm-land      = "Elm Land framework for full-stack Elm apps";
+        elm-spa       = "Elm SPA framework and tools";
+        elm-opencode  = "Elm + Opencode AI integration";
+        gemini        = "Gemini AI integration (opencode + gemini tools)";
+        get-shit-done = "get-shit-done: SDD tool";
+        gsd           = "get-shit-done v2";
+        hugo          = "Hugo static site generator";
+        kilocode-cli  = "Kilocode CLI (AI coding assistant)";
+        opencode      = "Opencode AI coding assistant";
+        opencode-skills = "Opencode skills / custom prompts";
+        opencode-commands = "Opencode custom commands";
+        python        = "Python 3 + common tools, uv, ruff, mypy";
+        qwen-code     = "Qwen AI coding integration";
+        rendercv      = "RenderCV: Yaml -> PDF CV generator";
+        spec-kit      = "Spec Kit: SDD tools";
+        swarmvault    = "SwarmVault: Agent wiki";
+        bmad-method   = "BMAD method (focus / productivity tools)";
+        gitnexus      = "GitNexus: knowledge base";
+        gitnexus-mcp  = "GitNexus MCP server";
+        jq            = "jq + jq tools for JSON processing";
+      };
+
       overlays = import ./overlays.nix;
 
       lib = {
