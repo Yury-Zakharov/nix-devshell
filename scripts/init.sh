@@ -15,23 +15,19 @@ fi
 nix flake new "$PROJECT_DIR" -t github:Yury-Zakharov/nix-devshell
 cd "$PROJECT_DIR"
 
-# Presets
+# Choose preset
 mapfile -t PRESET_KEYS < <(nix eval --impure --json --expr 'builtins.attrNames ((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets)' | jq -r '.[]' | sort)
 PRESET=$(gum choose --header "Choose a preset" "${PRESET_KEYS[@]}")
 
 # Load preset modules
-if [[ "$PRESET" == "minimal" ]]; then
-  mapfile -t PRESET_MODULES < <(echo -n "")
-else
-  mapfile -t PRESET_MODULES < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets."'"$PRESET"'")' | jq -r '.[]')
-fi
+mapfile -t PRESET_MODULES < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets."'"$PRESET"'")' | jq -r '.[]' 2>/dev/null || true)
 
-# Module descriptions
+# Module descriptions for selector
 mapfile -t DESCS < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").moduleDescriptions)' | jq -r 'to_entries[] | "\(.key) - \(.value)"' | sort)
 
 mapfile -t OPTIONAL < <(printf '%s\n' "${DESCS[@]}" | grep -v '^base - ')
 
-# Build pre-selected strings (exact match for gum --selected)
+# Pre-select preset modules in gum
 mapfile -t SELECTED_PRE < <(for m in "${PRESET_MODULES[@]}"; do
   for d in "${DESCS[@]}"; do
     if [[ "$d" == "$m - "* ]]; then echo "$d"; break; fi
@@ -40,18 +36,27 @@ done)
 
 SELECTED=$(gum choose --no-limit --ordered --selected "${SELECTED_PRE[@]}" --header "Additional modules (preset pre-selected)" "${OPTIONAL[@]}")
 
+# Build final list
 EXTRA_MODULES=(base)
+
+# Helper to avoid duplicates
+contains() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
 if [[ -n "$SELECTED" ]]; then
   mapfile -t SEL <<< "$SELECTED"
   for s in "${SEL[@]}"; do
     MODULE="${s%% - *}"
-    [[ ! " ${EXTRA_MODULES[*]} " =~ " ${MODULE} " ]] && EXTRA_MODULES+=("$MODULE")
+    contains "$MODULE" "${EXTRA_MODULES[@]}" || EXTRA_MODULES+=("$MODULE")
   done
 fi
 
-# Ensure preset modules are present
+# Ensure all preset modules are present
 for m in "${PRESET_MODULES[@]}"; do
-  [[ ! " ${EXTRA_MODULES[*]} " =~ " ${m} " ]] && EXTRA_MODULES+=("$m")
+  contains "$m" "${EXTRA_MODULES[@]}" || EXTRA_MODULES+=("$m")
 done
 
 # Copy template + replace block
@@ -87,4 +92,4 @@ git add flake.nix .envrc .gitignore
 echo "✅ Project ready at $(pwd)"
 echo "   Preset : $PRESET"
 echo "   Modules: ${EXTRA_MODULES[*]}"
-echo "   Next   : direnv allow"
+echo "   Next   : nix develop"
