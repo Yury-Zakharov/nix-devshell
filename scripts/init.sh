@@ -6,6 +6,7 @@ if [[ -z "$PROJECT_DIR" ]]; then
   PROJECT_DIR=$(gum input --prompt "Project directory (name or full path): " --value "my-project")
 fi
 
+# Expand ~ if user typed it
 PROJECT_DIR="${PROJECT_DIR/#\~/$HOME}"
 
 if [[ -d "$PROJECT_DIR" ]]; then
@@ -16,6 +17,7 @@ fi
 nix flake new "$PROJECT_DIR" -t github:Yury-Zakharov/nix-devshell
 cd "$PROJECT_DIR"
 
+# Dynamic modules (works from both local and github reference)
 mapfile -t ALL_MODULES < <(nix eval --impure --json --expr 'builtins.attrNames ((builtins.getFlake "github:Yury-Zakharov/nix-devshell").modules)' | jq -r '.[]' | sort)
 
 mapfile -t OPTIONAL < <(printf '%s\n' "${ALL_MODULES[@]}" | grep -v '^base$')
@@ -24,9 +26,11 @@ SELECTED=$(gum choose --no-limit --ordered --header "Select additional modules (
 EXTRA_MODULES=(base)
 [[ -n "$SELECTED" ]] && mapfile -t SEL <<< "$SELECTED" && EXTRA_MODULES+=("${SEL[@]}")
 
+# Copy template
 TEMPLATE_PATH=$(nix eval --impure --raw --expr '(builtins.getFlake "github:Yury-Zakharov/nix-devshell").templates.default.path')
 cp "$TEMPLATE_PATH/flake.nix" flake.nix
 
+# Replace block cleanly (using temp file to avoid sed quoting hell)
 cat > /tmp/extra.nix << EOF
       # Single declaration site for this project's modules
       extraModules = [
