@@ -20,6 +20,7 @@
         base         = import ./modules/base.nix;
         claude       = import ./modules/claude.nix;
         dotnet       = import ./modules/dotnet.nix;
+        dotnet-8     = import ./modules/dotnet-8.nix;
         avalonia     = import ./modules/avalonia.nix;
         elm          = import ./modules/elm.nix;
         elm-land     = import ./modules/elm-land.nix;
@@ -52,6 +53,7 @@
         base          = "Base development environment with common tools, XDG dirs, podman socket";
         claude        = "Claude AI integration (opencode + claude tools)";
         dotnet        = ".NET LTS SDK, dotnet CLI tools, C# language server";
+        dotnet-8      = ".NET 8 SDK, dotnet CLI tools, C# language server";
         avalonia      = "Avalonia UI framework for cross-platform .NET desktop apps";
         elm           = "Elm language, compiler, and dev tools";
         elm-land      = "Elm Land framework for full-stack Elm apps";
