@@ -55,14 +55,15 @@ if [[ $DRY_RUN -eq 0 && -z "$PRESET" && -z "$DESCRIPTION" ]]; then
   PRESET=$(gum choose --header "Choose a preset or Custom" "${PRESET_KEYS[@]}")
 fi
 
+# Determine preset modules
 if [[ "$PRESET" == "Custom" || -z "$PRESET" ]]; then
   PRESET_MODULES=()
 else
   mapfile -t PRESET_MODULES < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").presets."'"$PRESET"'")' | jq -r '.[]' 2>/dev/null || true)
 fi
 
-# Module selection (skipped in non-interactive)
-if [[ $DRY_RUN -eq 0 && -z "$PRESET" && -z "$DESCRIPTION" ]]; then
+# Module selection - ONLY when Custom is chosen interactively
+if [[ $DRY_RUN -eq 0 && "$PRESET" == "Custom" ]]; then
   mapfile -t DESCS < <(nix eval --impure --json --expr '((builtins.getFlake "github:Yury-Zakharov/nix-devshell").moduleDescriptions)' | jq -r 'to_entries[] | "\(.key) - \(.value)"' | sort)
   mapfile -t OPTIONAL < <(printf '%s\n' "${DESCS[@]}" | grep -v '^base - ')
   SELECTED=$(gum choose --no-limit --ordered --header "Additional modules (base is always included)" "${OPTIONAL[@]}")
