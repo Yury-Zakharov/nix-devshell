@@ -9,25 +9,20 @@
 
     echo "Spec-kit: $(specify version 2>/dev/null || echo "not found")"
 
-    # Copy best practices document
+    # Copy best-practices document (always available in project root)
     if [ ! -f "./best-practices.md" ]; then
       mkdir -p .github
       cp ${./spec-kit/best-practices.md} ./best-practices.md
       chmod u+w ./best-practices.md
-      echo "✓ best-practices.md copied"
+      echo "✓ best-practices.md copied to project root"
     fi
 
-
-    # Pre-configure spec-kit – copy our constitution, overwriting placeholder
-    if [ -n "''${SPEC_KIT_HOME:-}" ] && [ -d ".specify" ]; then
-      mkdir -p .specify/memory
-      chmod -R u+w .specify/memory 2>/dev/null || true
-      if [ ! -f ".specify/memory/constitution.md" ] || grep -q "\[PROJECT_NAME\]" ".specify/memory/constitution.md" 2>/dev/null; then
-        rm -f .specify/memory/constitution.md
-        cp ${./spec-kit/defaults/constitution.md} .specify/memory/constitution.md
-        chmod u+w .specify/memory/constitution.md
-        echo "✓ spec-kit pre-configured with custom constitution"
-      fi
+    # Copy our custom constitution as example (user will apply it manually via /speckit.constitution)
+    if [ ! -f "./constitution-example.md" ]; then
+      cp ${./spec-kit/defaults/constitution.md} ./constitution-example.md
+      chmod u+w ./constitution-example.md
+      echo "✓ constitution-example.md copied to project root"
+      echo "   → Run '/speckit.constitution' manually when ready to apply it"
     fi
 
     # Pre-configure GitHub workflow files (copied only on first run)

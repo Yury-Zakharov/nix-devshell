@@ -5,8 +5,6 @@
 
 ## 1. Core Principles (DAO)
 
-This devshell is built on three non-negotiable rules:
-
 - Single owner – every moving part belongs to exactly one Nix module.
 - Single declaration site – configuration lives in the repo (never generated or scattered).
 - Zero implicit behavior – everything is explicit, version-controlled, and reproducible.
@@ -15,19 +13,17 @@ This devshell is built on three non-negotiable rules:
 
 The setup combines:
 - OpenCode core + oh-my-openagent + micode plugins
-- Spec-kit (official GitHub SDD toolkit) with custom immutable constitution
+- Spec-kit (official GitHub SDD toolkit)
 - Remote GitHub MCP for automatic PR creation, review, and merge
 - GitHub branch protection + CI + PR template (pre-copied)
-
-All configuration is copied on first shell entry (copy-on-first-run pattern in Nix `shellHook`).
 
 ## 3. Providers & Models
 
 Clean, ordered provider block in `modules/opencode/default.jsonc`:
 - Free-first ordering in `/models` list
 - Per-role fallback chains (Architect / Coder / Tester)
-- Local Qwen3 30B is the final free safety net (never first)
-- GLM-5 series uses your paid quarterly subscription (correct `zai` baseURL)
+- Local Qwen3 30B is the final free safety net
+- GLM-5 series uses your paid quarterly subscription
 - All models have short, distinct human-readable names
 
 ## 4. Agent Roles & Configuration
@@ -43,12 +39,13 @@ All agents are explicitly mapped to three roles in:
 
 Each role has its own free-first fallback chain ending with GLM subscription → local model.
 
-## 5. Spec-Kit Integration
+## 5. Spec-Kit Integration (updated)
 
 - Pre-configured via `modules/spec-kit.nix`
-- Custom `constitution.md` (functional style, no implicit state, pure total functions, TDD + readonly tests, strict GitHub workflow)
-- GitHub workflow files (CI, PR template) copied automatically
-- `/speckit.constitution` is **not** needed — constitution is already loaded
+- spec-kit keeps its own default constitution template
+- Our custom constitution is copied to the project root as `constitution-example.md`
+- GitHub workflow files (CI, PR template) and `best-practices.md` are copied automatically on first run
+- **You must manually run `/speckit.constitution`** once per project to apply the custom constitution
 
 ## 6. GitHub Integration
 
@@ -61,18 +58,23 @@ Each role has its own free-first fallback chain ending with GLM subscription →
 
 1. Add modules in your project’s `flake.nix`:
    ```nix
-      extraModules = [
-        devshell.modules.base
-        devshell.modules.spec-kit
-        devshell.modules.opencode
-        # devshell.modules.dotnet
-        # ... add/remove only here
-      ];
+   devshell.modules = [ "opencode" "spec-kit" "git-worktree" "github-mcp" ];
    ```
 
-2. Set `GITHUB_MCP_PAT` in `.envrc` (fine-grained PAT with repo + pull_request + workflow scopes).
+2. Set required environment variables in `.envrc` (GITHUB_TOKEN, ZAI_API_KEY, etc.)
 
-3. `direnv allow` → everything is auto-initialised.
+3. `direnv allow`
+
+**Recommended workflow (fresh session after each major step):**
+- Open a fresh OpenCode session
+- `@prometheus /speckit.specify`
+- (Optional) `@prometheus /speckit.clarify`
+- `@prometheus /speckit.plan`
+- `@sisyphus /speckit.tasks`
+- **Run `/speckit.constitution` once** (applies your custom constitution)
+- `@hephaestus /speckit.implement` (or preferred coder agent)
+
+**Important:** For best stability and to avoid context/compaction issues, start a **new OpenCode session** after each major spec-kit command (`specify`, `plan`, `tasks`, `implement`).
 
 **Typical workflow example**
 
@@ -80,26 +82,22 @@ Each role has its own free-first fallback chain ending with GLM subscription →
 @prometheus /speckit.specify Add user authentication with GitHub OAuth
 ```
 
-→ Agent creates `spec.md` (tech-agnostic)  
+→ Agent creates `spec.md`  
 → `@prometheus /speckit.plan` → creates technical `plan.md`  
 → `@sisyphus /speckit.tasks` → breaks into phases  
 → `@hephaestus /speckit.implement` → implements on feature branch  
 → Agent uses GitHub MCP to create PR, request review, and merge after approval
 
-## 8. Spec-Kit Commands → Recommended Agents
+## 8. Command → Agent Mapping
 
-| Command                  | Recommended Agent(s)                          | Order | Parameters                          | Notes |
-|--------------------------|-----------------------------------------------|-------|-------------------------------------|-------|
-| `/speckit.constitution` | `prometheus` (Architect)                     | 1     | (free-text prompt optional)   | Rarely needed – your pre-populated constitution is already used |
-| `/speckit.specify`      | `prometheus` or `planner` (Architect)       | 2     | (free-text feature description) | Core command. Provide natural language after the command |
-| `/speckit.clarify`      | `oracle` (Architect)                         | 3     | (free-text clarification)     | Optional – use when spec needs refinement |
-| `/speckit.plan`         | `prometheus` → `hephaestus` (Coder)         | 4     | (free-text tech preferences)  | Core – provide any specific stack hints if wanted |
-| `/speckit.tasks`        | `sisyphus` (Coder)                           | 5     | None                               | Core |
-| `/speckit.taskstoissues`| `sisyphus` (Coder)                           | 6     | None                               | Optional |
-| `/speckit.analyze`      | `momus` (Tester) or `oracle`                 | 7     | None                               | Optional – run before implement |
-| `/speckit.implement`    | `hephaestus` or `executor` (Coder)           | 8     | None                               | Core |
-| `/speckit.checklist`    | `momus` (Tester)                             | any   | None                               | Flexible – quality gate at any time |
-
+| Command                | Recommended Agent          | Purpose                     |
+|------------------------|----------------------------|-----------------------------|
+| `/speckit.specify`     | `prometheus` / `planner`   | Raw idea → spec            |
+| `/speckit.clarify`     | `prometheus` / `oracle`    | Resolve ambiguities        |
+| `/speckit.plan`        | `prometheus` → `hephaestus`| Technical plan             |
+| `/speckit.tasks`       | `sisyphus`                 | Task breakdown             |
+| `/speckit.implement`   | `hephaestus` / `executor`  | Implementation             |
+| `/speckit.constitution`| `prometheus`               | Apply custom constitution  |
 
 ## 9. Maintenance & Extensibility
 
@@ -107,6 +105,8 @@ Each role has its own free-first fallback chain ending with GLM subscription →
 - Changes are made once in the nix-devshell repo
 - Every project inherits the exact same reproducible environment
 - To add a new agent/role/model: edit the single declaration file and rebuild
+
+This document lives in the nix-devshell repository and is copied into every project that uses the `opencode` module.
 
 ## 10. GitHub Branch Protection Setup (main / master)
 
