@@ -84,7 +84,7 @@
       # Single declaration site for presets (used by #init CLI)
       presets = {
         minimal   = [ ];
-        dotnet-ai = [ "dotnet" "opencode" ];
+        dotnet-ai = [ "dotnet" "spec-kit" "opencode" ];
         dotnet-ui = [ "dotnet" "avalonia" ];
         python-ai = [ "python" "opencode" ];
         elm       = [ "elm" "elm-land" "elm-spa" "elm-opencode" ];
