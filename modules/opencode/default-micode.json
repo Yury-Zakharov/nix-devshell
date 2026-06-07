@@ -1,10 +1,70 @@
 {
   "agents": {
-    "brainstormer": { "model": "google/gemini-2.5-pro", "temperature": 0.1, "fallback_models": ["groq/llama-3.3-70b-versatile", "google/gemini-2.5-pro", "openrouter/qwen/qwen3-coder:free", "zai/glm-5.1", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "planner": { "model": "google/gemini-2.5-pro", "temperature": 0.1, "fallback_models": ["groq/llama-3.3-70b-versatile", "google/gemini-2.5-pro", "openrouter/qwen/qwen3-coder:free", "zai/glm-5.1", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "commander": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "executor": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "implementer": { "model": "groq/gpt-oss-120b", "temperature": 0.25, "fallback_models": ["groq/gpt-oss-120b", "google/gemini-2.5-flash", "deepseek/deepseek-v4-pro", "zai/glm-5-turbo", "local-llama/qwen3-30b-a3b-q5_k_m"] },
-    "reviewer": { "model": "google/gemini-2.5-flash-lite", "temperature": 0.1, "fallback_models": ["groq/llama-3.1-8b-instant", "google/gemini-2.5-flash-lite", "mistral/devstral-2512", "zai/glm-4.5-air", "local-llama/qwen3-30b-a3b-q5_k_m"] }
+    "brainstormer": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.3-70b-versatile",
+        "google/gemini-2.5-pro",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    },
+    "planner": {
+      "model": "google/gemini-2.5-pro",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.3-70b-versatile",
+        "google/gemini-2.5-pro",
+        "openrouter/qwen/qwen3-coder:free",
+        "zai/glm-5.1",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    },
+    "commander": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    },
+    "executor": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    },
+    "implementer": {
+      "model": "groq/gpt-oss-120b",
+      "temperature": 0.25,
+      "fallback_models": [
+        "groq/gpt-oss-120b",
+        "google/gemini-2.5-flash",
+        "deepseek/deepseek-v4-pro",
+        "zai/glm-5-turbo",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    },
+    "reviewer": {
+      "model": "google/gemini-2.5-flash-lite",
+      "temperature": 0.1,
+      "fallback_models": [
+        "groq/llama-3.1-8b-instant",
+        "google/gemini-2.5-flash-lite",
+        "mistral/devstral-2512",
+        "zai/glm-4.5-air",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL"
+      ]
+    }
   }
 }

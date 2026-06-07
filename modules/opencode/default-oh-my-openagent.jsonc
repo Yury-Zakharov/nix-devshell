@@ -24,7 +24,7 @@
         "groq/llama-3.3-70b-versatile",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "oracle": {
@@ -35,7 +35,7 @@
         "groq/llama-3.3-70b-versatile",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "librarian": {
@@ -45,7 +45,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "explore": {
@@ -55,7 +55,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "multimodal-looker": {
@@ -65,7 +65,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
 
@@ -78,7 +78,7 @@
         "google/gemini-2.5-flash",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "hephaestus": {
@@ -89,7 +89,7 @@
         "google/gemini-2.5-flash",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "sisyphus-junior": {
@@ -100,7 +100,7 @@
         "google/gemini-2.5-flash",
         "openrouter/qwen/qwen3-coder:free",
         "zai/glm-5.1",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
 
@@ -112,7 +112,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "metis": {
@@ -122,7 +122,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
     "atlas": {
@@ -132,7 +132,7 @@
         "groq/llama-3.1-8b-instant",
         "openrouter/deepseek/deepseek-r1:free",
         "zai/glm-4.5-air",
-        "local-llama/qwen3-30b-a3b-q5_k_m",
+        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
       ],
     },
   },

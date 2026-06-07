@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "model": "local-llama/qwen3-30b-a3b-q5_k_m",
+  "model": "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
 
   "provider": {
     "local-llama": {
@@ -10,8 +10,8 @@
         "baseURL": "http://127.0.0.1:8080/v1",
       },
       "models": {
-        "qwen3-30b-a3b-q5_k_m": {
-          "name": "Qwen3 30B (local)",
+        "gemma-4-26B-A4B-it-qat-UD-Q4_K_XL": {
+          "name": "Gemma 4 MOE (local)",
           // Fully free, private, zero cost. Your current daily driver for sensitive work.
         },
       },
