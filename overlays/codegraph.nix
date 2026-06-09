@@ -20,12 +20,14 @@ final: prev:
 
       cat > $out/bin/codegraph <<'EOF2'
       #!${prev.runtimeShell}
-      export PATH="${nodejs}/bin:${prev.coreutils}/bin:$PATH"
+      # Do NOT export/modify PATH here. In rich devshells $PATH is already very long;
+      # extending it easily exceeds kernel ARG_MAX on exec (E2BIG / "Argument list too long").
+      # We use absolute store paths for all external commands instead.
 
       # Single owner: overlays/codegraph.nix
       # Everything (cli cache + index) lives inside project root/.codegraph/
       CLI_DIR="$PWD/.codegraph/cli"
-      mkdir -p "$CLI_DIR"
+      "${prev.coreutils}/bin/mkdir" -p "$CLI_DIR"
 
       cd "$CLI_DIR"
       if [ ! -d "node_modules" ]; then
