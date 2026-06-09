@@ -1,6 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
+  "lsp": true,
+
   "model": "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
 
   "provider": {

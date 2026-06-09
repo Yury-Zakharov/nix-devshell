@@ -43,6 +43,7 @@
         gitnexus     = import ./modules/gitnexus.nix;
         gitnexus-mcp = import ./modules/gitnexus-mcp.nix;
         jq           = import ./modules/jq.nix;
+        codegraph    = import ./modules/codegraph.nix;
         haskell      = import ./modules/haskell.nix;
         monomer      = import ./modules/monomer.nix;
         hsqml        = import ./modules/hsqml.nix;
@@ -76,6 +77,7 @@
         gitnexus      = "GitNexus: knowledge base";
         gitnexus-mcp  = "GitNexus MCP server";
         jq            = "jq + jq tools for JSON processing";
+        codegraph     = "CodeGraph: local code knowledge graph + MCP for opencode (perfect with dotnet)";
         haskell       = "Haskell + Stack";
         monomer       = "Haskell GUI, use it with haskell module";
         hsqml         = "Another Haskell GUI, qt way";
@@ -84,7 +86,7 @@
       # Single declaration site for presets (used by #init CLI)
       presets = {
         minimal   = [ ];
-        dotnet-ai = [ "dotnet" "spec-kit" "opencode" ];
+        dotnet-ai = [ "dotnet" "spec-kit" "opencode" "codegraph"];
         dotnet-ui = [ "dotnet" "avalonia" ];
         python-ai = [ "python" "opencode" ];
         elm       = [ "elm" "elm-land" "elm-spa" "elm-opencode" ];
