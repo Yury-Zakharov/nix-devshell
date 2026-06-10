@@ -3,31 +3,32 @@
 let
   nodejs = pkgs.nodejs_24;
 
-  codegraph = pkgs.writeShellScriptBin "codegraph" ''
-    set -euo pipefail
+codegraph = pkgs.writeShellScriptBin "codegraph" ''
+  set -euo pipefail
 
-    CLI_DIR="$PWD/.codegraph/cli"
-    mkdir -p "$CLI_DIR"
+  CLI_DIR="$PWD/.codegraph/cli"
+  mkdir -p "$CLI_DIR"
 
-    # Install the Linux native package first (this was being skipped before)
-    if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph-linux-x64" ]; then
-      echo "→ Installing native package @colbymchenry/codegraph-linux-x64@0.9.9..."
-      cd "$CLI_DIR"
-      ${nodejs}/bin/npm install --no-save @colbymchenry/codegraph-linux-x64@0.9.9
-      cd - >/dev/null
-    fi
+  # Install native package first
+  if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph-linux-x64" ]; then
+    echo "→ Installing native package @colbymchenry/codegraph-linux-x64@0.9.9..."
+    cd "$CLI_DIR"
+    ${nodejs}/bin/npm install --no-save @colbymchenry/codegraph-linux-x64@0.9.9
+    cd - >/dev/null
+  fi
 
-    # Install the main package if missing
-    if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph" ]; then
-      echo "→ Installing @colbymchenry/codegraph@0.9.9..."
-      cd "$CLI_DIR"
-      ${nodejs}/bin/npm install --no-save --ignore-scripts @colbymchenry/codegraph@0.9.9
-      cd - >/dev/null
-    fi
+  # Install main package if missing
+  if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph" ]; then
+    echo "→ Installing @colbymchenry/codegraph@0.9.9..."
+    cd "$CLI_DIR"
+    ${nodejs}/bin/npm install --no-save --ignore-scripts @colbymchenry/codegraph@0.9.9
+    cd - >/dev/null
+  fi
 
-    echo "→ Starting codegraph..."
-    exec ${nodejs}/bin/npx --yes --prefix "$CLI_DIR" @colbymchenry/codegraph "$@"
-  '';
+  # Directly execute the shim (avoids recursion)
+  exec ${nodejs}/bin/node "$CLI_DIR/node_modules/@colbymchenry/codegraph/npm-shim.js" "$@"
+'';
+
 in
 {
   packages = [ codegraph ];
