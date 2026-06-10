@@ -1,15 +1,16 @@
 final: prev:
 
 let
-  version = "0.9.9";
+  version = "0.9.9-fixed";   # bumped on purpose to force new derivation
 in
 {
   codegraph = prev.stdenvNoCC.mkDerivation {
     pname = "codegraph";
     inherit version;
 
-    src = builtins.fetchTarball {
-      url = "https://github.com/colbymchenry/codegraph/releases/download/v${version}/codegraph-linux-x64.tar.gz";
+    src = prev.fetchurl {
+      url = "https://github.com/colbymchenry/codegraph/releases/download/v0.9.9/codegraph-linux-x64.tar.gz";
+      hash = "sha256-1ysricisgn3gsdr46043y1nb8718jvlyrrgg9f3lqd9drq5yh3n4=";
     };
 
     dontConfigure = true;
