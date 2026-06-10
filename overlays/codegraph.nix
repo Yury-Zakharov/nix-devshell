@@ -1,54 +1,41 @@
 # Single owner: overlays/codegraph.nix
-# Zero implicit behaviour: CLI install happens once, explicitly, into $PWD/.codegraph/cli/
-# Index data stays in $PWD/.codegraph/ (tool default). No global state, no ~/
+# Zero implicit behaviour: uses the official self-contained pre-built binary
+# from GitHub releases (bundled runtime + tree-sitter). No npm, no node_modules.
 
 final: prev:
 
+let
+  version = "0.9.9";
+in
 {
-  codegraph = let
-    nodejs = prev.nodejs_24;
-  in prev.stdenvNoCC.mkDerivation {
+  codegraph = prev.stdenvNoCC.mkDerivation {
     pname = "codegraph";
-    version = "0.9.9";
+    inherit version;
 
-    dontUnpack = true;
+    src = prev.fetchurl {
+      url = "https://github.com/colbymchenry/codegraph/releases/download/v${version}/codegraph-linux-x64.tar.gz";
+      # Get the real hash once:
+      #   nix-prefetch-url https://github.com/colbymchenry/codegraph/releases/download/v0.9.9/codegraph-linux-x64.tar.gz
+      hash = "sha256-1ysricisgn3gsdr46043y1nb8718jvlyrrgg9f3lqd9drq5yh3n4="; # ← replace this line
+    };
 
-    nativeBuildInputs = [ nodejs ];
+    dontConfigure = true;
+    dontBuild = true;
 
-    buildPhase = ''
+    installPhase = ''
+      runHook preInstall
       mkdir -p $out/bin
-
-      cat > $out/bin/codegraph <<'EOF2'
-      #!${prev.runtimeShell}
-      # Do NOT export/modify PATH here. In rich devshells $PATH is already very long;
-      # extending it easily exceeds kernel ARG_MAX on exec (E2BIG / "Argument list too long").
-      # We use absolute store paths + --prefix for all external commands. No cd/OLDPWD.
-
-      # Single owner: overlays/codegraph.nix
-      # Everything (cli cache + index) lives inside project root/.codegraph/
-      CLI_DIR="$PWD/.codegraph/cli"
-      "${prev.coreutils}/bin/mkdir" -p "$CLI_DIR"
-
-      if [ ! -d "$CLI_DIR/node_modules" ]; then
-        echo "→ Installing @colbymchenry/codegraph@0.9.9 into $CLI_DIR (first run only)..."
-        ${nodejs}/bin/npm install --no-save --ignore-scripts --prefix "$CLI_DIR" @colbymchenry/codegraph@0.9.9
-      fi
-
-      exec ${nodejs}/bin/npx --yes --prefix "$CLI_DIR" @colbymchenry/codegraph "$@"
-EOF2
-
-      chmod +x $out/bin/codegraph
+      tar -xzf $src -C $out/bin --strip-components=1
+      chmod +x $out/bin/codegraph || true
+      runHook postInstall
     '';
 
-    dontInstall = true;
-    dontFixup = true;
-
     meta = with prev.lib; {
-      description = "CodeGraph — Pre-indexed local code knowledge graph + MCP server for opencode, Claude, Cursor, dotnet etc.";
+      description = "CodeGraph — Pre-indexed local code knowledge graph + MCP server (official self-contained binary)";
       homepage = "https://github.com/colbymchenry/codegraph";
       license = licenses.mit;
       mainProgram = "codegraph";
-      platforms = platforms.unix;
+      platforms = [ "x86_64-linux" ];
     };
   };
 }
