@@ -1,53 +1,28 @@
 { pkgs }:
 
 let
-  codegraph = pkgs.stdenvNoCC.mkDerivation {
-    pname = "codegraph";
-    version = "0.9.9";
+  nodejs = pkgs.nodejs_24;   # change to pkgs.nodejs if you prefer
 
-    src = pkgs.fetchurl {
-      url = "https://github.com/colbymchenry/codegraph/releases/download/v0.9.9/codegraph-linux-x64.tar.gz";
-      sha256 = "1ysricisgn3gsdr46043y1nb8718jvlyrrgg9f3lqd9drq5yh3n4";
-    };
+  codegraph = pkgs.writeShellScriptBin "codegraph" ''
+    set -euo pipefail
 
-    nativeBuildInputs = [ pkgs.patchelf ];
+    CLI_DIR="$PWD/.codegraph/cli"
+    mkdir -p "$CLI_DIR"
 
-    dontConfigure = true;
-    dontBuild = true;
+    if [ ! -d "$CLI_DIR/node_modules" ]; then
+      echo "→ Installing @colbymchenry/codegraph@0.9.9 into $CLI_DIR (first run)..."
+      cd "$CLI_DIR"
+      ${nodejs}/bin/npm install --no-save --ignore-scripts @colbymchenry/codegraph@0.9.9
+      cd - >/dev/null
+    fi
 
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      tar -xzf $src -C $out --strip-components=1
-
-      cat > $out/bin/codegraph <<EOF
-#!/usr/bin/env bash
-exec $out/node $out/lib/main.js "\$@"
-EOF
-      chmod +x $out/bin/codegraph
-      runHook postInstall
-    '';
-
-    postFixup = ''
-      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
-               --set-rpath "${pkgs.stdenv.cc.cc.lib}/lib" \
-               $out/node
-    '';
-
-    meta = with pkgs.lib; {
-      description = "CodeGraph — Pre-indexed local code knowledge graph + MCP server";
-      homepage = "https://github.com/colbymchenry/codegraph";
-      license = licenses.mit;
-      mainProgram = "codegraph";
-      platforms = [ "x86_64-linux" ];
-    };
-  };
+    exec ${nodejs}/bin/npx --yes --prefix "$CLI_DIR" @colbymchenry/codegraph "$@"
+  '';
 in
 {
   packages = [ codegraph ];
 
   shellHook = ''
-    export PATH="${codegraph}/bin:$PATH"
     mkdir -p "$PWD/.codegraph"
 
     if command -v opencode >/dev/null 2>&1 && [ ! -f "$PWD/.codegraph/.mcp-configured" ]; then
