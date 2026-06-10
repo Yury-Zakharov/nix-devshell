@@ -17,11 +17,17 @@ let
     dontBuild = true;
 
     installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      tar -xzf $src -C $out/bin --strip-components=1
-      chmod +x $out/bin/codegraph || true
-      runHook postInstall
+    runHook preInstall
+    mkdir -p $out/bin
+    tar -xzf $src -C $out --strip-components=1
+
+    # Create proper wrapper
+    cat > $out/bin/codegraph << 'EOF'
+    #!/usr/bin/env bash
+    exec "$(dirname "$0")/node" "$(dirname "$0")/../lib/main.js" "$@"
+    EOF
+    chmod +x $out/bin/codegraph
+    runHook postInstall
     '';
 
     meta = with pkgs.lib; {
