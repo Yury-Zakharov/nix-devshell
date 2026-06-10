@@ -1,7 +1,7 @@
 final: prev:
 
 let
-  version = "0.9.9-fixed";   # bumped on purpose to force new derivation
+  version = "0.9.9-working";
 in
 {
   codegraph = prev.stdenvNoCC.mkDerivation {
