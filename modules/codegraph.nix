@@ -1,42 +1,55 @@
 { pkgs }:
 
 let
-  nodejs = pkgs.nodejs_24;
+  codegraph = pkgs.stdenvNoCC.mkDerivation {
+    pname = "codegraph";
+    version = "0.9.9";
 
-codegraph = pkgs.writeShellScriptBin "codegraph" ''
-  set -euo pipefail
+    src = pkgs.fetchurl {
+      url = "https://github.com/colbymchenry/codegraph/releases/download/v0.9.9/codegraph-linux-x64.tar.gz";
+      sha256 = "1ysricisgn3gsdr46043y1nb8718jvlyrrgg9f3lqd9drq5yh3n4";
+    };
 
-  CLI_DIR="$PWD/.codegraph/cli"
-  mkdir -p "$CLI_DIR"
+    nativeBuildInputs = [ pkgs.patchelf ];
 
-  # Install native package first
-  if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph-linux-x64" ]; then
-    echo "→ Installing native package @colbymchenry/codegraph-linux-x64@0.9.9..."
-    cd "$CLI_DIR"
-    ${nodejs}/bin/npm install --no-save @colbymchenry/codegraph-linux-x64@0.9.9
-    cd - >/dev/null
-  fi
+    dontConfigure = true;
+    dontBuild = true;
 
-  # Install main package if missing
-  if [ ! -d "$CLI_DIR/node_modules/@colbymchenry/codegraph" ]; then
-    echo "→ Installing @colbymchenry/codegraph@0.9.9..."
-    cd "$CLI_DIR"
-    ${nodejs}/bin/npm install --no-save --ignore-scripts @colbymchenry/codegraph@0.9.9
-    cd - >/dev/null
-  fi
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/bin
+      tar -xzf $src -C $out --strip-components=1
 
-  # Directly execute the shim (avoids recursion)
-  exec ${nodejs}/bin/node "$CLI_DIR/node_modules/@colbymchenry/codegraph/npm-shim.js" "$@"
-'';
+      cat > $out/bin/codegraph << 'EOF'
+#!/usr/bin/env bash
+exec "$out/node" "$out/lib/main.js" "$@"
+EOF
+      chmod +x $out/bin/codegraph
+      runHook postInstall
+    '';
 
+    postFixup = ''
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+               --set-rpath "${pkgs.stdenv.cc.cc.lib}/lib" \
+               $out/node
+    '';
+
+    meta = with pkgs.lib; {
+      description = "CodeGraph — Pre-indexed local code knowledge graph + MCP server";
+      homepage = "https://github.com/colbymchenry/codegraph";
+      license = licenses.mit;
+      mainProgram = "codegraph";
+      platforms = [ "x86_64-linux" ];
+    };
+  };
 in
 {
   packages = [ codegraph ];
 
   shellHook = ''
+    export PATH="${codegraph}/bin:$PATH"
     mkdir -p "$PWD/.codegraph"
 
-    # One-time hint only (no auto-execution of codegraph install)
     if command -v opencode >/dev/null 2>&1 && [ ! -f "$PWD/.codegraph/.mcp-configured" ]; then
       echo "→ One-time: run 'codegraph install --location=local --target=opencode --yes' to wire CodeGraph MCP into this project's opencode config."
     fi
