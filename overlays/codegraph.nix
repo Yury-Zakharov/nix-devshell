@@ -8,9 +8,8 @@ in
     pname = "codegraph";
     inherit version;
 
-    src = prev.fetchurl {
+    src = builtins.fetchTarball {
       url = "https://github.com/colbymchenry/codegraph/releases/download/v${version}/codegraph-linux-x64.tar.gz";
-      hash = "sha256-1ysricisgn3gsdr46043y1nb8718jvlyrrgg9f3lqd9drq5yh3n4=";
     };
 
     dontConfigure = true;
@@ -33,4 +32,3 @@ in
     };
   };
 }
-# forced re-eval at 2026-06-10T02:14:30+01:00
