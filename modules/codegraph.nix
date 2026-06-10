@@ -36,14 +36,16 @@ in
 {
   packages = [ codegraph ];
 
-  shellHook = ''
-    mkdir -p "$PWD/.codegraph"
+shellHook = ''
+  export PATH="${codegraph}/bin:$PATH"     # ← force the binary into PATH
 
-    # One-time hint only (no auto-execution of codegraph install — zero implicit behaviour).
-    if command -v opencode >/dev/null 2>&1 && [ ! -f "$PWD/.codegraph/.mcp-configured" ]; then
-      echo "→ One-time: run 'codegraph install --location=local --target=opencode --yes' to wire CodeGraph MCP into this project's opencode config."
-    fi
+  mkdir -p "$PWD/.codegraph"
 
-    echo "codegraph ready (init -i | status | explore)"
-  '';
+  if command -v opencode >/dev/null 2>&1 && [ ! -f "$PWD/.codegraph/.mcp-configured" ]; then
+    echo "→ One-time: run 'codegraph install --location=local --target=opencode --yes' to wire CodeGraph MCP into this project's opencode config."
+  fi
+
+  echo "codegraph ready (init -i | status | explore)"
+'';
+
 }
