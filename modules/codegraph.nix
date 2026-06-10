@@ -21,10 +21,9 @@ let
     mkdir -p $out/bin
     tar -xzf $src -C $out --strip-components=1
 
-    # Create wrapper with correct paths
-    cat > $out/bin/codegraph << 'EOF'
+    cat > $out/bin/codegraph <<EOF
     #!/usr/bin/env bash
-    exec "$out/node" "$out/lib/main.js" "$@"
+    exec $out/node $out/lib/main.js "\$@"
     EOF
     chmod +x $out/bin/codegraph
     runHook postInstall
