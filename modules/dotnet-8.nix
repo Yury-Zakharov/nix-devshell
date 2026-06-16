@@ -48,5 +48,13 @@ EOF
 
     echo "✅ Dotnet fully isolated with NuGet.Mcp.Server and RoslynMcp.Server"
     echo "   Tools: .config/dotnet-tools.json"
+
+    # GitHub NuGet credential — set at runtime
+    if [ -n "$GITHUB_PAT" ]; then
+      export "NuGetPackageSourceCredentials_github=Username=Yury-Zakharov;Password=$GITHUB_PAT"
+      echo "✅ GitHub NuGet registry authenticated via GITHUB_PAT"
+    else
+      echo "⚠️  GITHUB_PAT not set – check .envrc"
+    fi
   '';
 }
