@@ -3,7 +3,7 @@
 {
   packages = [
     pkgs.nodejs
-    pkgs.nodePackages.typescript
+    pkgs.typescript
   ];
 
   shellHook = ''
