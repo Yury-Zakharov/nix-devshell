@@ -47,6 +47,8 @@
         haskell      = import ./modules/haskell.nix;
         monomer      = import ./modules/monomer.nix;
         hsqml        = import ./modules/hsqml.nix;
+        antigravity-cli = import ./modules/antigravity-cli.nix;
+        typescript      = import ./modules/typescript.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -81,6 +83,8 @@
         haskell       = "Haskell + Stack";
         monomer       = "Haskell GUI, use it with haskell module";
         hsqml         = "Another Haskell GUI, qt way";
+        antigravity-cli = "Google Antigravity CLI (agy) — best-effort isolation only";
+        typescript      = "TypeScript compiler (tsc) + Node.js runtime";
       };
 
       # Single declaration site for presets (used by #init CLI)
