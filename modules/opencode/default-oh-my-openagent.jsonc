@@ -1,139 +1,162 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
-  "compaction": {
-    "enabled": true,
-    "model": "google/gemini-2.5-pro",
-    "temperature": 0.0,
-    "max_tokens": 8000,
-  },
+
+  // === Core fallback & escalation behavior ===
+  "model_fallback": true,
   "runtime_fallback": {
     "enabled": true,
-    "retry_on_errors": [429, 503, 529, 1308, 1310],
-    "max_fallback_attempts": 3, // was much higher → now only 3 attempts
-    "cooldown_seconds": 15, // was ~60s → now 15s between retries
+    "retry_on_errors": [429, 500, 503, 529, 1308, 1310],
+    "max_fallback_attempts": 3,
+    "cooldown_seconds": 60,
     "timeout_seconds": 30,
     "notify_on_fallback": true,
   },
-  "agents": {
-    // Architect role (0.1 temp) – planning & specification
-    "prometheus": {
-      "model": "google/gemini-2.5-flash",
-      "temperature": 0.1,
-      "fallback_models": [
-        "google/gemini-2.5-pro",
-        "groq/llama-3.3-70b-versatile",
-        "openrouter/qwen/qwen3-coder:free",
-        "zai/glm-5.1",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "oracle": {
-      "model": "google/gemini-2.5-flash",
-      "temperature": 0.1,
-      "fallback_models": [
-        "google/gemini-2.5-pro",
-        "groq/llama-3.3-70b-versatile",
-        "openrouter/qwen/qwen3-coder:free",
-        "zai/glm-5.1",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "librarian": {
-      "model": "google/gemini-2.5-flash",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "explore": {
-      "model": "google/gemini-2.5-flash",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "multimodal-looker": {
-      "model": "google/gemini-2.5-flash",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
 
-    // Coder role (0.25 temp)
-    "sisyphus": {
-      "model": "groq/llama-3.3-70b-versatile",
-      "temperature": 0.25,
-      "fallback_models": [
-        "groq/qwen/qwen3-32b",
-        "google/gemini-2.5-flash",
-        "openrouter/qwen/qwen3-coder:free",
-        "zai/glm-5.1",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
+  // === Concurrency controls (protect Go limits + allow more parallelism on cheap models) ===
+  "background_task": {
+    "defaultConcurrency": 2,
+    "providerConcurrency": {
+      "opencode-go": 3,
+      "opencode": 2,
     },
-    "hephaestus": {
-      "model": "groq/llama-3.3-70b-versatile",
-      "temperature": 0.25,
-      "fallback_models": [
-        "groq/qwen/qwen3-32b",
-        "google/gemini-2.5-flash",
-        "openrouter/qwen/qwen3-coder:free",
-        "zai/glm-5.1",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "sisyphus-junior": {
-      "model": "groq/llama-3.3-70b-versatile",
-      "temperature": 0.25,
-      "fallback_models": [
-        "groq/qwen/qwen3-32b",
-        "google/gemini-2.5-flash",
-        "openrouter/qwen/qwen3-coder:free",
-        "zai/glm-5.1",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-
-    // Tester role (0.1 temp)
-    "momus": {
-      "model": "google/gemini-2.5-flash-lite",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "metis": {
-      "model": "google/gemini-2.5-flash-lite",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
-    },
-    "atlas": {
-      "model": "google/gemini-2.5-flash-lite",
-      "temperature": 0.1,
-      "fallback_models": [
-        "groq/llama-3.1-8b-instant",
-        "openrouter/deepseek/deepseek-r1:free",
-        "zai/glm-4.5-air",
-        "local-llama/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL",
-      ],
+    "modelConcurrency": {
+      "opencode-go/kimi-k2.7-code": 2,
+      "opencode-go/deepseek-v4-flash": 4,
+      "opencode-go/glm-5.2": 2,
     },
   },
+
+  // === Experimental settings (cache + token management) ===
+  "experimental": {
+    "disable_omo_env": true, // Improves cache hit rate by removing date/time/locale injection
+    "task_system": true,
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "detailed",
+    },
+    "truncate_all_tool_outputs": false,
+    "aggressive_truncation": false,
+  },
+
+  // === Agents with reasoning cost tuning ===
+  "agents": {
+    "sisyphus": {
+      "model": "opencode-go/kimi-k2.7-code",
+      "fallback_models": [
+        "opencode-go/glm-5.2",
+        "opencode-go/qwen3.7-plus",
+        "opencode/deepseek-v4-flash-free",
+        "opencode-go/deepseek-v4-pro",
+      ],
+      "reasoningEffort": "high",
+      "prompt_append": "For Spec-kit workflows: strictly reference and enforce .specify/memory/constitution.md, specs, plans, and task acceptance criteria. Drive completion using atomic tasks and categories for delegation.",
+    },
+    "prometheus": {
+      "model": "opencode-go/kimi-k2.7-code",
+      "fallback_models": [
+        "opencode-go/glm-5.2",
+        "opencode/deepseek-v4-flash-free",
+      ],
+      "reasoningEffort": "high",
+      "prompt_append": "When helping with Spec-kit planning: conduct thorough interviews if needed, produce detailed plans aligned with constitution and specs. Focus on verifiable, atomic tasks with clear criteria.",
+    },
+    "atlas": {
+      "model": "opencode-go/deepseek-v4-pro",
+      "fallback_models": [
+        "opencode-go/deepseek-v4-flash",
+        "opencode/deepseek-v4-flash-free",
+        "opencode-go/qwen3.7-plus",
+        "opencode-go/minimax-m3",
+      ],
+      "reasoningEffort": "low", // ← lowered for implementation work
+    },
+    "oracle": {
+      "model": "opencode-go/glm-5.2",
+      "fallback_models": [
+        "opencode-go/kimi-k2.7-code",
+        "opencode/deepseek-v4-flash-free",
+      ],
+      "reasoningEffort": "medium",
+    },
+    "momus": {
+      "model": "opencode-go/glm-5.2",
+      "fallback_models": ["opencode-go/kimi-k2.7-code"],
+      "reasoningEffort": "high",
+    },
+    "metis": {
+      "model": "opencode-go/kimi-k2.7-code",
+      "fallback_models": ["opencode-go/glm-5.2"],
+      "reasoningEffort": "high",
+    },
+    "hephaestus": {
+      "model": "opencode/gpt-5.5",
+      "fallback_models": ["opencode/gpt-5.5-pro"],
+      "reasoningEffort": "xhigh",
+      "description": "GPT-native only. Use sparingly for deep autonomous reasoning. Prefer Atlas + categories for most Spec-kit implementation work.",
+    },
+  },
+
+  // === Categories with reasoning cost tuning + cache-friendly settings ===
+  "categories": {
+    "spec-orchestrate": {
+      "model": "opencode-go/kimi-k2.7-code",
+      "fallback_models": [
+        "opencode-go/glm-5.2",
+        "opencode/deepseek-v4-flash-free",
+      ],
+      "reasoningEffort": "high",
+      "description": "High-level Spec-kit orchestration, constitution, specify, and plan phases.",
+    },
+    "spec-review": {
+      "model": "opencode-go/glm-5.2",
+      "fallback_models": [
+        "opencode-go/kimi-k2.7-code",
+        "opencode/deepseek-v4-flash-free",
+      ],
+      "reasoningEffort": "high",
+      "description": "Review of Spec-kit specs, plans, and tasks (Momus/Metis/Oracle style).",
+    },
+    "spec-impl-deep": {
+      "model": "opencode-go/deepseek-v4-pro",
+      "fallback_models": ["opencode-go/qwen3.7-plus", "opencode-go/minimax-m3"],
+      "reasoningEffort": "medium",
+      "description": "Complex atomic Spec-kit task implementation.",
+    },
+    "spec-impl-quick": {
+      "model": "opencode-go/deepseek-v4-flash",
+      "fallback_models": [
+        "opencode/deepseek-v4-flash-free",
+        "opencode-go/mimo-v2.5",
+      ],
+      "reasoningEffort": "minimal", // ← lowest cost for high-volume atomic tasks
+      "max_prompt_tokens": 8000,
+      "description": "Simple/fast atomic Spec-kit task implementation (preferred for most execution).",
+    },
+    "quick": {
+      "model": "opencode-go/deepseek-v4-flash",
+      "fallback_models": ["opencode/deepseek-v4-flash-free"],
+      "reasoningEffort": "minimal",
+      "max_prompt_tokens": 6000,
+    },
+    "deep": {
+      "model": "opencode-go/deepseek-v4-pro",
+      "fallback_models": [
+        "opencode-go/qwen3.7-plus",
+        "opencode/deepseek-v4-flash-free",
+      ],
+      "reasoningEffort": "medium",
+    },
+  },
+
+  // === General performance & safety ===
+  "hashline_edit": true,
+  "telemetry": false,
+  "agent_order": [
+    "sisyphus",
+    "prometheus",
+    "atlas",
+    "oracle",
+    "momus",
+    "metis",
+  ],
 }
