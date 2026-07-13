@@ -4,6 +4,7 @@
   packages = [
     pkgs.nodejs
     pkgs.typescript
+    pkgs.typescript-language-server
   ];
 
   shellHook = ''
