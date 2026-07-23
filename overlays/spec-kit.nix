@@ -19,15 +19,15 @@ final: prev:
     ];
 
     propagatedBuildInputs = with prev.python3Packages; [
-      click
-      pyyaml
-      httpx
-      platformdirs
-      readchar
-      rich
-      truststore
-      typer
-      json5                  # ← added: required runtime dep from pyproject.toml
+    click
+    json5
+    packaging
+    pathspec
+    platformdirs
+    pyyaml
+    readchar
+    rich
+    typer
     ];
 
     pythonImportsCheck = [ "specify_cli" ];
