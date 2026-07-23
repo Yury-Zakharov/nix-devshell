@@ -25,7 +25,7 @@ echo "→ Fetching latest release from github/spec-kit ..."
 TAG=$(curl -sL https://api.github.com/repos/github/spec-kit/releases/latest | jq -r .tag_name)
 
 if [[ -z "$TAG" || "$TAG" == "null" ]]; then
-  echo "error: failed to obtain latest tag" >&2
+  echo "error: failed to obtain latest tag." >&2
   exit 1
 fi
 
@@ -44,7 +44,7 @@ echo "→ Prefetching sha256 for $TAG ..."
 SHA256=$(nix-prefetch-url --unpack "https://github.com/github/spec-kit/archive/refs/tags/${TAG}.tar.gz")
 
 if [[ -z "$SHA256" ]]; then
-  echo "error: failed to obtain sha256" >&2
+  echo "error: failed to obtain sha256." >&2
   exit 1
 fi
 
@@ -53,7 +53,7 @@ echo "  rev      = \"$TAG\""
 echo "  sha256   = \"$SHA256\""
 
 if [[ $DRY_RUN -eq 1 ]]; then
-  echo "(dry-run) no changes written"
+  echo "(dry-run) no changes written."
   exit 0
 fi
 
