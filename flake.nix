@@ -49,6 +49,7 @@
         hsqml        = import ./modules/hsqml.nix;
         antigravity-cli = import ./modules/antigravity-cli.nix;
         typescript      = import ./modules/typescript.nix;
+        job-radar    = import ./modules/job-radar.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -85,6 +86,7 @@
         hsqml         = "Another Haskell GUI, qt way";
         antigravity-cli = "Google Antigravity CLI (agy) — best-effort isolation only";
         typescript      = "TypeScript compiler (tsc) + Node.js runtime";
+        job-radar     = "job-radar: watch employer ATS boards; state in .job-radar/";
       };
 
       # Single declaration site for presets (used by #init CLI)
@@ -98,6 +100,7 @@
         heavy-sdd = [ "bmad-method" "dotnet" "opencode" ];
         haskel-ai = [ "opencode" "haskell" ];
         haskel-ui = [ "monomer" "haskell" ];
+        job-search = [ "job-radar" "rendercv" "claude" ];
       };
 
       overlays = import ./overlays.nix;

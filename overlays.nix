@@ -8,5 +8,6 @@
   (import ./overlays/gsd.nix)
   (import ./overlays/bmad-method.nix)
   (import ./overlays/gitnexus.nix)
+  (import ./overlays/job-radar.nix)
   # Future shared overlays go here only
 ]
