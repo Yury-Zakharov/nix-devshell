@@ -44,14 +44,17 @@ final: prev:
       # which is site-packages/ after install, not the repo root.
       postInstall = ''
         site="$out/${python.sitePackages}"
-        mkdir -p "$site/sources" "$site/skills"
+        mkdir -p "$site/sources" "$site/skills" "$out/share/job-radar"
         cp -r sources/. "$site/sources/"
         cp -r skills/.  "$site/skills/"
+        # Same tree, stable path for the module to copy into CLAUDE_CONFIG_DIR.
+        cp -r skills "$out/share/job-radar/skills"
+        cp config.example.yaml "$out/share/job-radar/config.example.yaml"
       '';
 
       # Rank / generate look in ~/.claude/skills. Redirect that lookup
       # to CLAUDE_CONFIG_DIR when the claude module is also loaded
-      # (that module sets CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/.claude,
+      # (that module sets CLAUDE_CONFIG_DIR=$XDG_CONFIG_HOME/claude,
       # and base.nix pins XDG_* to the project root).
       postPatch = ''
         substituteInPlace jobradar/runner.py \
@@ -68,7 +71,7 @@ final: prev:
       };
     };
   in
-  prev.writeShellApplication {
+  (prev.writeShellApplication {
     name = "job-radar";
     runtimeInputs = [
       job-radar-unwrapped
@@ -93,5 +96,11 @@ final: prev:
       cd "$JOB_RADAR_HOME"
       exec ${job-radar-unwrapped}/bin/job-radar "$@"
     '';
-  };
+  }).overrideAttrs (old: {
+    passthru = (old.passthru or {}) // {
+      unwrapped = job-radar-unwrapped;
+      skills = "${job-radar-unwrapped}/share/job-radar/skills";
+      exampleConfig = "${job-radar-unwrapped}/share/job-radar/config.example.yaml";
+    };
+  });
 }
