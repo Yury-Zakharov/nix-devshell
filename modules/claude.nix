@@ -1,17 +1,12 @@
 { pkgs }:
 
 {
-  packages = [
-    pkgs.claude-code
-  ];
-
-  env = {
-    CLAUDE_CONFIG_DIR = "$XDG_CONFIG_HOME/.claude";
-  };
+  packages = [ pkgs.claude-code ];
+  env = { };
 
   shellHook = ''
-    mkdir -p "$CLAUDE_CONFIG_DIR"
-    echo "Claude: $(claude --version 2>/dev/null || true)"
-    echo "Claude config: fully redirected to \$XDG_CONFIG_HOME/.claude"
+    export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$XDG_CONFIG_HOME/claude}"
+    mkdir -p "$CLAUDE_CONFIG_DIR/skills"
+    echo "Claude config: $CLAUDE_CONFIG_DIR"
   '';
 }
