@@ -11,14 +11,14 @@ final: prev:
     # data/job-radar.db, out/, state/, seed/).
     job-radar-unwrapped = py.buildPythonApplication rec {
       pname = "job-radar";
-      version = "0.1.0-unstable-2026-09-07";
+      version = "0.1.0-unstable-2026-09-17";
 
       src = prev.fetchFromGitHub {
         owner = "maccydee";
         repo = "job-radar";
-        rev = "2ce8b3a5087ba8c10d66a29c5b4292a80e09c436";
+        rev = "fb99f68daebceb96c72f03bbcab747412303598f";
         # Unpacked-tree hash. Refresh with scripts/update-job-radar.sh
-        sha256 = "13vz4g7wfs02mwjccisydidbjilan9z004db150jprqpxihm9432";
+        sha256 = "12b8k45kq2hyp7l0sdbzxy3nqhrjkasrqxg783a0lp7mp64qq3aw";
       };
 
       pyproject = true;
