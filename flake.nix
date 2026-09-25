@@ -3,9 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    mattpocock-skills = {
+        url = "github:mattpocock/skills";
+        flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, mattpocock-skills }:
     let
       system = "x86_64-linux";
     in
@@ -50,6 +54,11 @@
         antigravity-cli = import ./modules/antigravity-cli.nix;
         typescript      = import ./modules/typescript.nix;
         job-radar    = import ./modules/job-radar.nix;
+        matt-pocock-skills = args:
+            import ./modules/matt-pocock-skills.nix (args // {
+                src = mattpocock-skills;
+                rev = mattpocock-skills.rev or "unknown";
+            });
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -87,6 +96,7 @@
         antigravity-cli = "Google Antigravity CLI (agy) — best-effort isolation only";
         typescript      = "TypeScript compiler (tsc) + Node.js runtime";
         job-radar     = "job-radar: watch employer ATS boards; state in .job-radar/";
+        matt-pocock-skills = "Matt Pocock engineering skills for OpenCode (project-local; spec-kit/OMO unchanged)";
       };
 
       # Single declaration site for presets (used by #init CLI)
