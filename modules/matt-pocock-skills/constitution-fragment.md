@@ -1,7 +1,9 @@
 # Matt Pocock skills — constitution fragment
 
-Paste the block below into the project constitution (`/speckit.constitution`).
-Do not apply it automatically. Spec-kit stays the process owner.
+Pass only the marked block to `/speckit.constitution`.
+Do not pass this preamble or the First-run section.
+
+----- BEGIN CONSTITUTION BLOCK -----
 
 ## Process ownership
 
@@ -36,6 +38,8 @@ and label conventions only. It must not replace spec-kit tasks.
 TDD is required at pre-agreed seams. Tests are necessary and not sufficient
 for correctness. Domain model, architecture hygiene, and two-axis code review
 are also required.
+
+----- END CONSTITUTION BLOCK -----
 
 ## First run
 
