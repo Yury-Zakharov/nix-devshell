@@ -14,6 +14,9 @@ Do not pass this preamble or the First-run section.
   Config: `.opencode/oh-my-openagent.jsonc`. Do not add Pocock skills as OMO agents.
 - Matt Pocock skills own engineering discipline inside those phases.
   Files: `.opencode/matt-pocock-skills/`. Discovery: symlinks under `.opencode/skills/`.
+- Operating procedure: `speckit-pocock-workflow.md`. Every `/speckit.*`
+  command loads the named Pocock skill and grills the human before
+  writing artifacts. Do not skip the grill.
 
 ## Phase mapping
 

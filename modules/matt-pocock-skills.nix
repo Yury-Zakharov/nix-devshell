@@ -113,6 +113,18 @@ in
         echo "matt-pocock-skills: wrote matt-pocock-skills-constitution-fragment.md (paste into constitution; not applied automatically)"
       fi
 
+      if [ ! -f speckit-pocock-workflow.md ]; then
+        cp ${./matt-pocock-skills/speckit-pocock-workflow.md} speckit-pocock-workflow.md
+        chmod u+w speckit-pocock-workflow.md
+        echo "matt-pocock-skills: wrote speckit-pocock-workflow.md"
+      fi
+
+      if [ ! -f matt-pocock-skills-agents-fragment.md ]; then
+        cp ${./matt-pocock-skills/agents-fragment.md} matt-pocock-skills-agents-fragment.md
+        chmod u+w matt-pocock-skills-agents-fragment.md
+        echo "matt-pocock-skills: wrote matt-pocock-skills-agents-fragment.md (paste into AGENTS.md; not applied automatically)"
+      fi
+
       echo "matt-pocock-skills: loaded into .opencode/matt-pocock-skills/ (symlinked for OpenCode discovery)"
       if [ -n "$collisions" ]; then
         echo "matt-pocock-skills: name collisions (left untouched):$collisions"
