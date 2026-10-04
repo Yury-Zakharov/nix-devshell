@@ -19,6 +19,10 @@
     export XDG_DATA_HOME="$PWD/.local/share"
     mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
 
+    # Home Manager owns signing in $HOME/.config/git/config.
+    # GIT_CONFIG_GLOBAL replaces both the XDG git config and ~/.gitconfig.
+    export GIT_CONFIG_GLOBAL="$HOME/.config/git/config"
+
     # Opencode config (common)
     # export OPENCODE_CONFIG_DIR="$XDG_CONFIG_HOME/.opencode"
     # mkdir -p "$OPENCODE_CONFIG_DIR"

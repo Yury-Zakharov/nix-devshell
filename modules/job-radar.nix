@@ -3,7 +3,6 @@
 {
   packages = [
     pkgs.job-radar
-    pkgs.git
   ];
 
   env = {
