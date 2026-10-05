@@ -3,13 +3,13 @@ final: prev:
 {
   spec-kit = prev.python3Packages.buildPythonApplication {
     pname = "spec-kit";
-    version = "1.0.12";
+    version = "1.1.0";
 
     src = prev.fetchFromGitHub {
       owner = "github";
       repo = "spec-kit";
-      rev = "v1.0.12";
-      sha256 = "12c2aisklc3s40b3glbjmidz46r6ylfmkj8ryrgng5x2x32jg9yb";
+      rev = "v1.1.0";
+      sha256 = "1qz6y18m7z629cmv97nkshvigsi5q274xrxpzr46aqksx8rdvc9m";
     };
 
     pyproject = true;
