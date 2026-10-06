@@ -60,6 +60,7 @@
                 rev = mattpocock-skills.rev or "unknown";
             });
         go           = import ./modules/go.nix;
+        rust         = import ./modules/rust.nix;
       };
 
       # Single declaration site for module metadata (used by #init CLI)
@@ -99,6 +100,7 @@
         job-radar     = "job-radar: watch employer ATS boards; state in .job-radar/";
         matt-pocock-skills = "Matt Pocock engineering skills for OpenCode (project-local; spec-kit/OMO unchanged)";
         go            = "Go toolchain; module cache, build cache, and go install binaries under .go/";
+        rust          = "Rust toolchain; registry and cargo install binaries under .cargo-home/ (not ~/.cargo)";
       };
 
       # Single declaration site for presets (used by #init CLI)

@@ -148,6 +148,8 @@ node_modules/
 .nuget/
 .opencode/
 .go/
+.cargo-home/
+.rustup/
 EOF
 
 git init -q
