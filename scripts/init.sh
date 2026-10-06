@@ -147,6 +147,7 @@ node_modules/
 .local/
 .nuget/
 .opencode/
+.go/
 EOF
 
 git init -q

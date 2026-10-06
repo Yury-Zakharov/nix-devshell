@@ -104,6 +104,7 @@ Role-based models are already set in `.opencode/opencode.jsonc`:
 - `elm` + `elm-opencode` – Elm toolchain + OpenCode support
 - `gitnexus` + `gitnexus-mcp` – knowledge graph + MCP server
 - `gsd`, `bmad-method` – autonomous agents
+- `go` – Go toolchain; module cache and `go install` binaries under `.go/`
 
 ## Update an existing project
 
